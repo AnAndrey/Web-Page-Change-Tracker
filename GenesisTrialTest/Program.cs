@@ -63,7 +63,12 @@ namespace GenesisTrialTest
         {
 
             HtmlChangeDetector rrrr = new HtmlChangeDetector();
+            rrrr.ChangeHasDetectedEvent += Rrrr_ChangeHasDetectedEvent;
+            rrrr.ErrorEvent += Rrrr_ErrorEvent;
+
             rrrr.FindChanges();
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadLine();
             return;
             const string sudrf = "https://sudrf.ru";
             
@@ -120,6 +125,20 @@ namespace GenesisTrialTest
             return;
             //ConfigurationManager.ConnectionStrings["SomeConnectionString"].ConnectionString
             
+        }
+
+        private static void Rrrr_ErrorEvent(object sender, string e)
+        {
+            Console.WriteLine("Error ocured - '{0}'.", e);
+        }
+
+        private static void Rrrr_ChangeHasDetectedEvent(object sender, EventArgs e)
+        {
+            DataChangedEventArgs args = e as DataChangedEventArgs;
+            if (args != null)
+            {
+                Console.WriteLine("Message - '{0}', state - '{1}'", args.Message, args.State);
+            }
         }
 
         private static void LoadAddresses(string v)

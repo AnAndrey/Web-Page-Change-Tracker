@@ -12,6 +12,7 @@ namespace GenesisTrialTest
 {
     public class SqlDataPreserver : IDataPreserver
     {
+        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest-Copy(2)\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
         IDatabaseStorage _storage;
         public SqlDataPreserver(IDatabaseStorage storage)
         {
@@ -36,7 +37,6 @@ namespace GenesisTrialTest
         }
         private void StoreData(IEnumerable<ChangeableData> data, int ? parentId = null)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
             //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB\LocalDatabase.mdf;Integrated Security=True";
             using (var connection = new SqlConnection(connectionString))
             {
@@ -69,7 +69,6 @@ namespace GenesisTrialTest
 
         private int ? GetRecordId(ChangeableData data)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
             //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB\LocalDatabase.mdf;Integrated Security=True";
             using (var connection = new SqlConnection(connectionString))
             {
@@ -81,7 +80,7 @@ namespace GenesisTrialTest
                     {
                         if (reader.Read())
                         {
-                            Console.WriteLine(String.Format("{0}", reader["id"]));
+                            //Console.WriteLine(String.Format("{0}", reader["id"]));
                             return reader.GetInt32(0);
                         }
                         return null;
@@ -92,9 +91,8 @@ namespace GenesisTrialTest
             throw new Exception("refactoring is needed");
         }
 
-        public void ClearTable(string tableName)
+        public int ClearTable(string tableName)
         {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
             //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB\LocalDatabase.mdf;Integrated Security=True";
             using (var connection = new SqlConnection(connectionString))
             {
@@ -102,7 +100,7 @@ namespace GenesisTrialTest
                 string commandFormat = "DELETE FROM {0}";
                 using (SqlCommand command = new SqlCommand(String.Format(commandFormat, tableName), connection))
                 {
-                    command.ExecuteNonQuery();
+                    return command.ExecuteNonQuery();
                 }
             }
         }
@@ -124,7 +122,7 @@ namespace GenesisTrialTest
             {
                 DataRow row = table.NewRow();
                 row["Name"] = item.Name;
-                row["Value"] = String.IsNullOrEmpty(item.Value) ? "empty": item.Value;
+                row["Value"] = item.Value;
                 if (parentId != null)
                     row["Parent_id"] = parentId;
                 table.Rows.Add(row);

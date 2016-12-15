@@ -15,7 +15,7 @@ namespace GenesisTrialTest
         public SqlRepository(string connectionString)
         {
             ConnectionString = connectionString;
-            ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
+            ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest-Copy(2)\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
         }
         public DataTable GetDataSet(string sqlCommand)
         {
@@ -25,15 +25,12 @@ namespace GenesisTrialTest
             {
                 connection.Open();
                 //string commandFormat = "SELECT * FROM [{0}] WHERE Parent_id='{1}'";
-                using (SqlCommand command = new SqlCommand(sqlCommand, connection))
+                using (SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand, connection))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        var table = new DataTable();
-                        table.Load(reader);
+                    var table = new DataTable();
 
-                        return table;
-                    }
+                    adapter.Fill(table);
+                    return table;
                 }
             }
         }

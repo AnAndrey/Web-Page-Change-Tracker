@@ -21,15 +21,19 @@ namespace GenesisTrialTest
         }
         public IEnumerable<ChangeableData> GetData()
         {
-            IEnumerable<ChangeableData> data = null;
+            List<ChangeableData> data = new List<ChangeableData>();
             string commandFormat = "SELECT * FROM [{0}]";
             DataTable table = _repository.GetDataSet(String.Format(commandFormat, typeof(CourtRegion).Name));
             if (IsValidChangeableDataInTable(table))
             {
-                data = table.Rows.Cast<DataRow>().Select<DataRow, ChangeableData>(x =>
+                foreach(DataRow row in table.Rows)
                 {
-                    return new CourtRegion(x["Value"].ToString(), x["Name"].ToString()) { Childs = GetDistricts(x["id"].ToString()) };
-                });
+                    data.Add(new CourtRegion(row["Name"].ToString(),
+                                             row["Value"].ToString())
+                                            {
+                                                Childs = GetDistricts(row["id"].ToString())
+                                            });
+                };
             }
             return data;
         }
@@ -43,7 +47,7 @@ namespace GenesisTrialTest
             {
                 data = table.Rows.Cast<DataRow>().Select<DataRow, ChangeableData>(x =>
                 {
-                    return new CourtRegion(x["Value"].ToString(), x["Name"].ToString()) { Childs = GetLocation(x["id"].ToString()) };
+                    return new CourtRegion(x["Name"].ToString(), x["Value"].ToString()) { Childs = GetLocation(x["id"].ToString()) };
                 });
             }
             return data;
@@ -59,7 +63,7 @@ namespace GenesisTrialTest
             {
                 data = table.Rows.Cast<DataRow>().Select<DataRow, ChangeableData>(x =>
                 {
-                    return new CourtRegion(x["Value"].ToString(), x["Name"].ToString()) { Childs = null };
+                    return new CourtRegion(x["Name"].ToString(), x["Value"].ToString()) { Childs = null };
                 });
             }
             return data;
@@ -94,11 +98,11 @@ namespace GenesisTrialTest
        
     }
 
-    internal static class DataTableExtensions
-    {
-        internal static IEnumerable<ChangeableData> TopChangableDataEnumarable(this DataTable table)
-        {
+    //internal static class DataTableExtensions
+    //{
+    //    internal static IEnumerable<ChangeableData> TopChangableDataEnumarable(this DataTable table)
+    //    {
 
-        }
-    }
+    //    }
+    //}
 }

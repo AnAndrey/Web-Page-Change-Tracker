@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharedInterfaces
 {
+    
     public abstract class  ChangeableData
     {
         public virtual string GroupName { get; protected set; }

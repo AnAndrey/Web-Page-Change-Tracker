@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace GenesisTrialTest
 {
-    public class DataChangedHandler:EventArgs
+    public class DataChangedEventArgs:EventArgs
     {
         public string Message { get; private set; }
         public DataCondition State { get; private set; }
-        public DataChangedHandler(string message, DataCondition state)
+        public DataChangedEventArgs(string message, DataCondition state)
         {
             Message = message;
             State = state;
         }
 
-        public DataChangedHandler(string format, string arg0, string arg1, DataCondition state)
+        public DataChangedEventArgs(string format, string arg0, string arg1, DataCondition state)
         {
             Message = String.Format(format, arg0, arg1);
             State = state;

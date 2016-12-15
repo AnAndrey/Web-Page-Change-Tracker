@@ -132,8 +132,8 @@ namespace GenesisTrialTest
                 return null;
             }
             return from n in territoryItems
-                   select (ChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='left']").InnerText,
-                                                 n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }));
+                   select (ChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }),
+                                                            n.SelectSingleNode("div[@class='left']").InnerText);
         }
 
         private IEnumerable<ChangeableData> GetAllCurtDistricts(string regionNumber)
