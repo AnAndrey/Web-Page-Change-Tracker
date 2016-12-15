@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharedInterfaces
 {
-    public interface IChangeDetector
+    public interface IDataAnalyzer
     {
         event EventHandler<string> ErrorEvent;
-        event EventHandler ChangeHasDetectedEvent;
-        void FindChanges();
+        event EventHandler DetectedDifferenceEvent;
+        void Analyze(IEnumerable<ChangeableData> a, IEnumerable<ChangeableData> b);
     }
 }

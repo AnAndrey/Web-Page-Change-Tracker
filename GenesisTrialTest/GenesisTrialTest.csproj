@@ -67,7 +67,7 @@
     <Compile Include="CourtLocation.cs" />
     <Compile Include="DataChangedHandler .cs" />
     <Compile Include="HtmlChangeableDataFetcher.cs" />
-    <Compile Include="HtmlChangeDetector.cs" />
+    <Compile Include="DataAnalyzer.cs" />
     <Compile Include="IDatabaseStorage.cs" />
     <Compile Include="CourtRegion.cs" />
     <Compile Include="Program.cs" />
