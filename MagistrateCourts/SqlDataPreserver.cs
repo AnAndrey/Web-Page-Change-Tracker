@@ -8,15 +8,15 @@ using System.Data.SqlClient;
 using System.Data;
 
 
-namespace GenesisTrialTest
+namespace MagistrateCourts
 {
     public class SqlDataPreserver : IDataPreserver
     {
         string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\dotNet\projects\Practice\Genesis\GenesisTrialTest-Copy(2)\GenesisTrialTest\DB\LocalDatabase.mdf;Integrated Security=True";
-        IDatabaseStorage _storage;
-        public SqlDataPreserver(IDatabaseStorage storage)
+        
+        public SqlDataPreserver()
         {
-            _storage = storage;
+            
         }
         public void Save(IEnumerable<ChangeableData> data)
         {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedInterfaces;
 
-namespace GenesisTrialTest
+namespace MagistrateCourts
 {
     public class CourtLocation : ChangeableData
     {

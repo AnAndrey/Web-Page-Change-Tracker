@@ -7,7 +7,7 @@ using SharedInterfaces;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace GenesisTrialTest
+namespace MagistrateCourts
 {
     public class SqlRepository: IRepository
     {

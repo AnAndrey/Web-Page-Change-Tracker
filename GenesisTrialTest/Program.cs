@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using HtmlAgilityPack;
+using SimpleDataAnalyzer;
 using System.Data.SqlClient;
 using System.Text;
 using System.Net;
-using System.IO;
+using MagistrateCourts;
 using System.Linq;
 using EmailNotifyer;
 using SharedInterfaces;
@@ -15,41 +14,6 @@ namespace GenesisTrialTest
 {
     class Program
     {
-        public static HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
-        {
-            if (!Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
-            {
-                throw new InvalidDataException(String.Format("Invalid URL '{0}'.", url));
-            }
-            Stream htmlStream = null;
-            try
-            {
-                WebClient webClient = new WebClient() { Encoding = encoding };
-                htmlStream = webClient.OpenRead(url);
-
-                var list = new List<string>();
-                HtmlDocument doc = new HtmlDocument();
-                doc.Load(htmlStream);
-
-
-                return doc;
-            }
-            finally
-            {
-                if (htmlStream != null)
-                {
-                    htmlStream.Close();
-                }
-            }
-        }
-
-        public static IEnumerable<int> CountFrom(int start)
-        {
-            start++;
-            for (int i = start; i <= 20; i++)
-                yield return i;
-        }
-
         public static void EntryPoint()
         {
             // 1. Init storage connection (IStorageConnector)
@@ -61,17 +25,16 @@ namespace GenesisTrialTest
         }
         static void Main(string[] args)
         {
-
             IDataAnalyzer changeDetector = new DataAnalyzer();
             changeDetector.DetectedDifferenceEvent += Rrrr_ChangeHasDetectedEvent;
             changeDetector.ErrorEvent += Rrrr_ErrorEvent;
             
             //GetHmlData
-            IDataFetcher firstSourceOfData = new HtmlChangeableDataFetcher();
+            IDataFetcher firstSourceOfData = new HtmlCourtsInfoFetcher();
             var receivedData = firstSourceOfData.GetData();
 
             string rootTableName = receivedData.First().GetType().Name;
-            IDataFetcher secondSourceOfData = new SqlDataFetcher("CourtRegion");
+            IDataFetcher secondSourceOfData = new SqlDataFetcher();
 
             var presavedData = secondSourceOfData.GetData();
 
@@ -79,7 +42,7 @@ namespace GenesisTrialTest
             changeDetector.Analyze(receivedData, presavedData);
             //return;
             // Clear All old data
-            SqlDataPreserver preserve = new SqlDataPreserver(null);
+            SqlDataPreserver preserve = new SqlDataPreserver();
 
             int t = preserve.ClearTable(rootTableName);
             // Save new data

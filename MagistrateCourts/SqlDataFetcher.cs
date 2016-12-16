@@ -7,17 +7,15 @@ using SharedInterfaces;
 using System.Data.SqlClient;
 using System.Data;
 
-namespace GenesisTrialTest
+namespace MagistrateCourts
 {
     public class SqlDataFetcher : IDataFetcher
     {
         string _rootTableName = String.Empty;
         SqlRepository _repository = new SqlRepository("");
 
-        public SqlDataFetcher(string rootTableName)
+        public SqlDataFetcher()
         {
-            _rootTableName = rootTableName;
-
         }
         public IEnumerable<ChangeableData> GetData()
         {
@@ -26,13 +24,13 @@ namespace GenesisTrialTest
             DataTable table = _repository.GetDataSet(String.Format(commandFormat, typeof(CourtRegion).Name));
             if (IsValidChangeableDataInTable(table))
             {
-                foreach(DataRow row in table.Rows)
+                foreach (DataRow row in table.Rows)
                 {
                     data.Add(new CourtRegion(row["Name"].ToString(),
                                              row["Value"].ToString())
-                                            {
-                                                Childs = GetDistricts(row["id"].ToString())
-                                            });
+                    {
+                        Childs = GetDistricts(row["id"].ToString())
+                    });
                 };
             }
             return data;
@@ -93,16 +91,6 @@ namespace GenesisTrialTest
             }
             return true;
         }
-
-
-       
     }
-
-    //internal static class DataTableExtensions
-    //{
-    //    internal static IEnumerable<ChangeableData> TopChangableDataEnumarable(this DataTable table)
-    //    {
-
-    //    }
-    //}
 }
+

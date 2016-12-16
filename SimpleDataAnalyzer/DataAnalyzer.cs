@@ -7,9 +7,9 @@ using SharedInterfaces;
 using System.IO;
 using System.Data;
 
-namespace GenesisTrialTest
+namespace SimpleDataAnalyzer
 {
-    class DataAnalyzer : IDataAnalyzer
+    public class DataAnalyzer : IDataAnalyzer
     {
         public event EventHandler DetectedDifferenceEvent;
         public event EventHandler<string> ErrorEvent;

@@ -8,9 +8,9 @@ using System.Net;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace GenesisTrialTest
+namespace MagistrateCourts
 {
-    public class HtmlChangeableDataFetcher : IDataFetcher
+    public class HtmlCourtsInfoFetcher : IDataFetcher
     {
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {

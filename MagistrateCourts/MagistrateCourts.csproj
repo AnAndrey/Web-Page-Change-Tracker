@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{701FA741-CD70-4B01-9A1C-56A07E8C07F0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{9D305428-8FBC-46D0-A286-3B802AF483D6}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GenesisTrialTest</RootNamespace>
-    <AssemblyName>GenesisTrialTest</AssemblyName>
+    <RootNamespace>MagistrateCourts</RootNamespace>
+    <AssemblyName>MagistrateCourts</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,7 +28,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -39,7 +37,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -48,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,11 +59,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CourtDistrcits.cs" />
+    <Compile Include="CourtLocation.cs" />
+    <Compile Include="CourtRegion.cs" />
+    <Compile Include="HtmlCourtsInfoFetcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlDataFetcher.cs" />
+    <Compile Include="SqlDataPreserver.cs" />
+    <Compile Include="SqlRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <Content Include="DB\LocalDatabase.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DB\LocalDatabase_log.ldf">
+      <DependentUpon>LocalDatabase.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -77,22 +90,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmailNotifyer\EmailNotifyer.csproj">
-      <Project>{34684ebf-8339-4720-830c-d6778ec6d439}</Project>
-      <Name>EmailNotifyer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MagistrateCourts\MagistrateCourts.csproj">
-      <Project>{9d305428-8fbc-46d0-a286-3b802af483d6}</Project>
-      <Name>MagistrateCourts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SharedInterfaces\SharedInterfaces.csproj">
       <Project>{eabc9645-d4ba-47eb-8bd8-2e72760d7ce3}</Project>
       <Name>SharedInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SimpleDataAnalyzer\SimpleDataAnalyzer.csproj">
-      <Project>{981a45ea-8a4b-46ed-a0b3-3fd706ee4eb3}</Project>
-      <Name>SimpleDataAnalyzer</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
