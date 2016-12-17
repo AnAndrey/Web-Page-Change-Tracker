@@ -44,7 +44,6 @@
     <Compile Include="IDataAnalyzer.cs" />
     <Compile Include="IDataFetcher.cs" />
     <Compile Include="IDataPreserver.cs" />
-    <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

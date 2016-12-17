@@ -10,6 +10,6 @@ namespace SharedInterfaces
     {
         event EventHandler<string> ErrorEvent;
         event EventHandler DetectedDifferenceEvent;
-        void Analyze(IEnumerable<ChangeableData> a, IEnumerable<ChangeableData> b);
+        void Analyze(IEnumerable<IChangeableData> a, IEnumerable<IChangeableData> b);
     }
 }

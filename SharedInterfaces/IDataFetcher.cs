@@ -13,7 +13,7 @@ namespace SharedInterfaces
     /// </summary>
     public interface IDataFetcher
     {
-        IEnumerable<ChangeableData> GetData();
+        IEnumerable<IChangeableData> GetData();
         
     }
 

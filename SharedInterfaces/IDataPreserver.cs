@@ -8,6 +8,7 @@ namespace SharedInterfaces
 {
     public interface IDataPreserver
     {
-        void Save(IEnumerable<ChangeableData> data);
+        void SaveData(IEnumerable<IChangeableData> data);
+        void CleanStorage();
     }
 }

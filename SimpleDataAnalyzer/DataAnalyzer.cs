@@ -14,7 +14,7 @@ namespace SimpleDataAnalyzer
         public event EventHandler DetectedDifferenceEvent;
         public event EventHandler<string> ErrorEvent;
        
-        public void Analyze(IEnumerable<ChangeableData> receivedDataSet, IEnumerable<ChangeableData> presavedDataSet)
+        public void Analyze(IEnumerable<IChangeableData> receivedDataSet, IEnumerable<IChangeableData> presavedDataSet)
         {
             if (receivedDataSet == null || presavedDataSet == null)
                 return;
@@ -27,7 +27,7 @@ namespace SimpleDataAnalyzer
 
             foreach (var receivedData in receivedDataDictionary)
             {
-                ChangeableData preservedData = null;
+                IChangeableData preservedData = null;
                 
                 if (presavedDataDictionary.TryGetValue(receivedData.Key, out preservedData))
                 {
@@ -56,7 +56,7 @@ namespace SimpleDataAnalyzer
             ReportAboutOutdatedItems(presavedDataDictionary);
         }
 
-        private void ReportAboutOutdatedItems(IEnumerable<KeyValuePair<string,ChangeableData>> outdatedItems)
+        private void ReportAboutOutdatedItems(IEnumerable<KeyValuePair<string,IChangeableData>> outdatedItems)
         {
             outdatedItems.All(x =>
             {
@@ -77,12 +77,12 @@ namespace SimpleDataAnalyzer
 
     internal static class ChageableDataExtensions
     {
-        internal static Dictionary<string, ChangeableData> ToDictionary(this IEnumerable<ChangeableData> dataSet)
+        internal static Dictionary<string, IChangeableData> ToDictionary(this IEnumerable<IChangeableData> dataSet)
         {
-            var dictionary = new Dictionary<string, ChangeableData>();
-            foreach (ChangeableData item in dataSet)
+            var dictionary = new Dictionary<string, IChangeableData>();
+            foreach (IChangeableData item in dataSet)
             {
-                ChangeableData tempValue = null;
+                IChangeableData tempValue = null;
                 if (!dictionary.TryGetValue(item.Name, out tempValue))
                 {
                     dictionary.Add(item.Name, item);

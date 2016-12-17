@@ -45,7 +45,7 @@ namespace MagistrateCourts
             return null;
         }
 
-        private IEnumerable<ChangeableData> GetAllCurtRegions()
+        private IEnumerable<IChangeableData> GetAllCurtRegions()
         {
             const string sudrf = "https://sudrf.ru";
 
@@ -79,10 +79,10 @@ namespace MagistrateCourts
 
             return allCourtRegionsNode.Descendants("option").Skip(1)
                     .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value))
-                    .Cast<ChangeableData>().ToList();
+                    .Cast<IChangeableData>().ToList();
         }
 
-        public IEnumerable<ChangeableData> GetData()
+        public IEnumerable<IChangeableData> GetData()
         {
             var regions = GetAllCurtRegions();
             if (regions == null)
@@ -109,7 +109,7 @@ namespace MagistrateCourts
             return regions;
         }
 
-        private IEnumerable<ChangeableData> GetAllLocations(string site)
+        private IEnumerable<IChangeableData> GetAllLocations(string site)
         {
             string str = site + "/modules.php?name=terr";
             HtmlDocument allCourtDistrcits = LoadHtmlDocument(str, Encoding.UTF8);
@@ -132,11 +132,11 @@ namespace MagistrateCourts
                 return null;
             }
             return from n in territoryItems
-                   select (ChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }),
+                   select (IChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }),
                                                             n.SelectSingleNode("div[@class='left']").InnerText);
         }
 
-        private IEnumerable<ChangeableData> GetAllCurtDistricts(string regionNumber)
+        private IEnumerable<IChangeableData> GetAllCurtDistricts(string regionNumber)
         {
             const string getDistrictFormatString = "https://sudrf.ru/index.php?id=300&act=go_ms_search&searchtype=ms&var=true&ms_type=ms&court_subj={0}&ms_city=&ms_street=";
             HtmlDocument allCourtDistrcits = LoadHtmlDocument(String.Format(getDistrictFormatString, regionNumber), Encoding.UTF8);
@@ -153,9 +153,9 @@ namespace MagistrateCourts
                 return null;
             }
 
-            return searchResultTbl.Select(n => new CourtDistrcits(n.Element("a").InnerText,
+            return searchResultTbl.Select(n => new CourtDistrict(n.Element("a").InnerText,
                                                                        n.SelectSingleNode(".//div[@class='courtInfoCont']//a").InnerText))
-                                  .Cast<ChangeableData>()
+                                  .Cast<IChangeableData>()
                                   .ToList();
         }
 

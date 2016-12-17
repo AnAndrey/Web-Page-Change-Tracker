@@ -25,6 +25,8 @@ namespace GenesisTrialTest
         }
         static void Main(string[] args)
         {
+            HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
+
             IDataAnalyzer changeDetector = new DataAnalyzer();
             changeDetector.DetectedDifferenceEvent += Rrrr_ChangeHasDetectedEvent;
             changeDetector.ErrorEvent += Rrrr_ErrorEvent;
@@ -33,20 +35,18 @@ namespace GenesisTrialTest
             IDataFetcher firstSourceOfData = new HtmlCourtsInfoFetcher();
             var receivedData = firstSourceOfData.GetData();
 
-            string rootTableName = receivedData.First().GetType().Name;
             IDataFetcher secondSourceOfData = new SqlDataFetcher();
 
             var presavedData = secondSourceOfData.GetData();
 
-            //GetStorageData
             changeDetector.Analyze(receivedData, presavedData);
-            //return;
-            // Clear All old data
+
             SqlDataPreserver preserve = new SqlDataPreserver();
 
-            int t = preserve.ClearTable(rootTableName);
+            // Clear All old data
+            preserve.CleanStorage();
             // Save new data
-            preserve.Save(receivedData);
+            preserve.SaveData(receivedData);
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadLine();

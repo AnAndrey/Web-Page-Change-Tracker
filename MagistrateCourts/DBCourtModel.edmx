@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CourtDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CourtDistrcits">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="WebSite" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RegionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourtLocation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Area" Type="nvarchar(max)" />
+          <Property Name="DistrictId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourtRegion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CourtDistrcits_CourtRegion">
+          <End Role="CourtRegion" Type="Self.CourtRegion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourtDistrcits" Type="Self.CourtDistrcits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourtRegion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtDistrcits">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtLocation_CourtDistricts">
+          <End Role="CourtDistrcits" Type="Self.CourtDistrcits" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourtLocation" Type="Self.CourtLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourtDistrcits">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtLocation">
+              <PropertyRef Name="DistrictId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CourtDBModelStoreContainer">
+          <EntitySet Name="CourtDistrcits" EntityType="Self.CourtDistrcits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourtLocation" EntityType="Self.CourtLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourtRegion" EntityType="Self.CourtRegion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CourtDistrcits_CourtRegion" Association="Self.FK_CourtDistrcits_CourtRegion">
+            <End Role="CourtRegion" EntitySet="CourtRegion" />
+            <End Role="CourtDistrcits" EntitySet="CourtDistrcits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtLocation_CourtDistricts" Association="Self.FK_CourtLocation_CourtDistricts">
+            <End Role="CourtDistrcits" EntitySet="CourtDistrcits" />
+            <End Role="CourtLocation" EntitySet="CourtLocation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CourtDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CourtDistrict">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="WebSite" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="RegionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourtRegion" Relationship="Self.FK_CourtDistrcits_CourtRegion" FromRole="CourtDistrcits" ToRole="CourtRegion" />
+          <NavigationProperty Name="CourtLocations" Relationship="Self.FK_CourtLocation_CourtDistricts" FromRole="CourtDistrcits" ToRole="CourtLocation" />
+        </EntityType>
+        <EntityType Name="CourtLocation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="DistrictId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CourtDistrict" Relationship="Self.FK_CourtLocation_CourtDistricts" FromRole="CourtLocation" ToRole="CourtDistrcits" />
+        </EntityType>
+        <EntityType Name="CourtRegion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="Number" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <NavigationProperty Name="CourtDistricts" Relationship="Self.FK_CourtDistrcits_CourtRegion" FromRole="CourtRegion" ToRole="CourtDistrcits" />
+        </EntityType>
+        <Association Name="FK_CourtDistrcits_CourtRegion">
+          <End Role="CourtRegion" Type="Self.CourtRegion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourtDistrcits" Type="CourtDBModel.CourtDistrict" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourtRegion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtDistrcits">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourtLocation_CourtDistricts">
+          <End Role="CourtDistrcits" Type="CourtDBModel.CourtDistrict" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CourtLocation" Type="Self.CourtLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CourtDistrcits">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CourtLocation">
+              <PropertyRef Name="DistrictId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CourtDBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CourtDistricts" EntityType="CourtDBModel.CourtDistrict" />
+          <EntitySet Name="CourtLocations" EntityType="Self.CourtLocation" />
+          <EntitySet Name="CourtRegions" EntityType="Self.CourtRegion" />
+          <AssociationSet Name="FK_CourtDistrcits_CourtRegion" Association="Self.FK_CourtDistrcits_CourtRegion">
+            <End Role="CourtRegion" EntitySet="CourtRegions" />
+            <End Role="CourtDistrcits" EntitySet="CourtDistricts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourtLocation_CourtDistricts" Association="Self.FK_CourtLocation_CourtDistricts">
+            <End Role="CourtDistrcits" EntitySet="CourtDistricts" />
+            <End Role="CourtLocation" EntitySet="CourtLocations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CourtDBModelStoreContainer" CdmEntityContainer="CourtDBContext">
+          <EntitySetMapping Name="CourtDistricts">
+            <EntityTypeMapping TypeName="CourtDBModel.CourtDistrict">
+              <MappingFragment StoreEntitySet="CourtDistrcits">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourtLocations">
+            <EntityTypeMapping TypeName="CourtDBModel.CourtLocation">
+              <MappingFragment StoreEntitySet="CourtLocation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Location" />
+                <ScalarProperty Name="Address" ColumnName="Area" />
+                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourtRegions">
+            <EntityTypeMapping TypeName="CourtDBModel.CourtRegion">
+              <MappingFragment StoreEntitySet="CourtRegion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
