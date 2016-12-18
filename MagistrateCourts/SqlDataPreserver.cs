@@ -17,62 +17,62 @@ namespace MagistrateCourts
             using (CourtDBContext dbContext = new CourtDBContext())
             {
                 dbContext.BulkDelete(dbContext.CourtRegions);
-                //dbContext.CourtRegions.RemoveRange(null);
-                //dbContext.SaveChanges();
             }
         }
 
         public void SaveData(IEnumerable<IChangeableData> data)
         {
-
+            Dictionary<string, CourtRegion> regionDictionary = null;
             using (CourtDBContext dbContext = new CourtDBContext())
             {
-                
                 dbContext.BulkInsert(data.Cast<CourtRegion>());
-                InsertDistrictsByRegion(dbContext, data);
+                regionDictionary = dbContext.CourtRegions.ToDictionary(x => x.Name);
             }
+            InsertDistrictsByRegion(regionDictionary, data);
         }
 
-        private void InsertDistrictsByRegion(CourtDBContext dbContext, IEnumerable<IChangeableData> data)
+        private void InsertDistrictsByRegion(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
         {
-            var regionDictionary = dbContext.CourtRegions.ToDictionary(x => x.Name);
-            foreach (var item in data)
+            foreach (var itemRaw in regionsRaw)
             {
                 CourtRegion region = null;
-                if (item.Childs != null && regionDictionary.TryGetValue(item.Name, out region))
+                if (itemRaw.Childs != null && regionsSaved.TryGetValue(itemRaw.Name, out region))
                 {
-                    var districts = item.Childs.Select<IChangeableData, CourtDistrict>(x =>
+                    var districtsRaw = itemRaw.Childs.Select(x =>
                     {
                         CourtDistrict district = (CourtDistrict)x;
                         district.RegionId = region.Id;
                         return district;
                     });
-                    dbContext.BulkInsert(districts);
 
-                    var savedDistricts = dbContext.CourtDistricts.Where(x => x.RegionId == region.Id);
-                    InsertLocationsByDistrict(dbContext, savedDistricts, districts);
-
+                    Dictionary<string, CourtDistrict> savedDistricts = null;
+                    using (CourtDBContext dbContext = new CourtDBContext())
+                    {
+                        dbContext.BulkInsert(districtsRaw);
+                        savedDistricts = dbContext.CourtDistricts.Where(x => x.RegionId == region.Id)
+                                                                 .ToDictionary(x=>x.Name);
+                    }
+                    InsertLocationsByDistrict(savedDistricts, districtsRaw);
                 }
             }
         }
 
-        private void InsertLocationsByDistrict(CourtDBContext dbContext, IQueryable<CourtDistrict> districts, IEnumerable<IChangeableData> data)
+        private void InsertLocationsByDistrict(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
         {
-            var districtDictionary = districts.ToDictionary(x => x.Name);
-
-            foreach (var item in data)
+            foreach (var itemRaw in districtsRaw)
             {
                 CourtDistrict district = null;
-                if (item.Childs != null && districtDictionary.TryGetValue(item.Name, out district))
+                if (itemRaw.Childs != null && districtsSaved.TryGetValue(itemRaw.Name, out district))
                 {
-                    var locations = item.Childs.Select<IChangeableData, CourtLocation>(x =>
+                    var locations = itemRaw.Childs.Select(x =>
                     {
                         CourtLocation location = (CourtLocation)x;
                         location.DistrictId = district.Id;
                         return location;
                     });
 
-                    dbContext.BulkInsert(locations);
+                    using (CourtDBContext dbContext = new CourtDBContext())
+                        dbContext.BulkInsert(locations);
                 }
             }
 
