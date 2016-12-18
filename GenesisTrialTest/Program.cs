@@ -25,8 +25,6 @@ namespace GenesisTrialTest
         }
         static void Main(string[] args)
         {
-            HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
-
             IDataAnalyzer changeDetector = new DataAnalyzer();
             changeDetector.DetectedDifferenceEvent += Rrrr_ChangeHasDetectedEvent;
             changeDetector.ErrorEvent += Rrrr_ErrorEvent;
