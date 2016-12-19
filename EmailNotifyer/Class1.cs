@@ -12,13 +12,12 @@ namespace EmailNotifyer
     {
         public void Notify()
         {
-            MailMessage mail = new MailMessage("you@yourcompany.com", "");
-            using (MailMessage mm = new MailMessage("", ""))
+            using (MailMessage mm = new MailMessage("you@yourcompany.com", "you@yourcompany.com"))
             {
                 mm.Subject = "Mail Subject";
                 mm.Body = "Mail Body";
                 mm.IsBodyHtml = false;
-                using (SmtpClient sc = new SmtpClient("smtp.gmail.com", 587))
+                using (SmtpClient sc = new SmtpClient())
                 {
                     sc.EnableSsl = true;
                     sc.DeliveryMethod = SmtpDeliveryMethod.Network;
