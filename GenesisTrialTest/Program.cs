@@ -25,45 +25,25 @@ namespace GenesisTrialTest
         }
         static void Main(string[] args)
         {
-            IDataAnalyzer changeDetector = new DataAnalyzer();
-            changeDetector.DetectedDifferenceEvent += Rrrr_ChangeHasDetectedEvent;
-            changeDetector.ErrorEvent += Rrrr_ErrorEvent;
-            
-            //GetHmlData
-            IDataFetcher firstSourceOfData = new HtmlCourtsInfoFetcher();
-            var receivedData = firstSourceOfData.GetData();
+            try
+            {
+                EmailNotifierFacade f = new EmailNotifierFacade(new DataAnalyzer(),
+                                                                new HtmlCourtsInfoFetcher(),
+                                                                new SqlDataStorageProvider(),
+                                                                null);
 
-            IDataFetcher secondSourceOfData = new SqlDataFetcher();
+                f.FindAndNotify();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Something goes wrong: \r\n {0}", ex);
+            }
 
-            var presavedData = secondSourceOfData.GetData();
-
-            changeDetector.Analyze(receivedData, presavedData);
-
-            SqlDataPreserver preserve = new SqlDataPreserver();
-
-            // Clear All old data
-            preserve.CleanStorage();
-            // Save new data
-            preserve.SaveData(receivedData);
-
+            Console.WriteLine();
             Console.WriteLine("Press any key to exit...");
-            Console.ReadLine();
+            Console.ReadKey();
             return;
         }
-
-        private static void Rrrr_ErrorEvent(object sender, string e)
-        {
-            Console.WriteLine("Error ocured - '{0}'.", e);
-        }
-
-        private static void Rrrr_ChangeHasDetectedEvent(object sender, EventArgs e)
-        {
-            DataChangedEventArgs args = e as DataChangedEventArgs;
-            if (args != null)
-            {
-                Console.WriteLine("Message - '{0}', state - '{1}'", args.Message, args.State);
-            }
-        }
-
+        
     }
 }
