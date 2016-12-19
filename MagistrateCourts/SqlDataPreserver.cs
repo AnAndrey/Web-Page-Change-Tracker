@@ -22,17 +22,37 @@ namespace MagistrateCourts
 
         public void SaveData(IEnumerable<IChangeableData> data)
         {
+            InsertAllRegions(data);
+        }
+
+        private void InsertAllRegions(IEnumerable<IChangeableData> regionsRaw)
+        {
             Dictionary<string, CourtRegion> regionDictionary = null;
             using (CourtDBContext dbContext = new CourtDBContext())
             {
-                dbContext.BulkInsert(data.Cast<CourtRegion>());
+                dbContext.BulkInsert(regionsRaw.Cast<CourtRegion>());
                 regionDictionary = dbContext.CourtRegions.ToDictionary(x => x.Name);
             }
-            InsertDistrictsByRegion(regionDictionary, data);
+            InsertAllDistricts(regionDictionary, regionsRaw);
         }
 
-        private void InsertDistrictsByRegion(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
+
+        private void InsertAllDistricts(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
         {
+            List<CourtDistrict> districtsWithParentId = SetParentIdToDistricts(regionsSaved, regionsRaw);
+
+            Dictionary<string, CourtDistrict> savedDistricts = null;
+            using (CourtDBContext dbContext = new CourtDBContext())
+            {
+                dbContext.BulkInsert(districtsWithParentId);
+                savedDistricts = dbContext.CourtDistricts.ToDictionary(x => x.Name);
+            }
+            InsertLocationsByDistrict(savedDistricts, districtsWithParentId);
+        }
+
+        private List<CourtDistrict> SetParentIdToDistricts(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
+        {
+            List<CourtDistrict> districtsWithParentId = new List<CourtDistrict>();
             foreach (var itemRaw in regionsRaw)
             {
                 CourtRegion region = null;
@@ -45,20 +65,24 @@ namespace MagistrateCourts
                         return district;
                     });
 
-                    Dictionary<string, CourtDistrict> savedDistricts = null;
-                    using (CourtDBContext dbContext = new CourtDBContext())
-                    {
-                        dbContext.BulkInsert(districtsRaw);
-                        savedDistricts = dbContext.CourtDistricts.Where(x => x.RegionId == region.Id)
-                                                                 .ToDictionary(x=>x.Name);
-                    }
-                    InsertLocationsByDistrict(savedDistricts, districtsRaw);
+                    districtsWithParentId.AddRange(districtsRaw);
                 }
             }
+
+            return districtsWithParentId;
         }
 
         private void InsertLocationsByDistrict(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
         {
+            List<CourtLocation> locationsToSave = SetParentIdToLocations(districtsSaved, districtsRaw);
+
+            using (CourtDBContext dbContext = new CourtDBContext())
+                dbContext.BulkInsert(locationsToSave);
+        }
+
+        private List<CourtLocation> SetParentIdToLocations(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
+        {
+            List<CourtLocation> locationsToSave = new List<CourtLocation>();
             foreach (var itemRaw in districtsRaw)
             {
                 CourtDistrict district = null;
@@ -71,11 +95,12 @@ namespace MagistrateCourts
                         return location;
                     });
 
-                    using (CourtDBContext dbContext = new CourtDBContext())
-                        dbContext.BulkInsert(locations);
+                    locationsToSave.AddRange(locations);
                 }
             }
 
+            return locationsToSave;
         }
+
     }
 }
