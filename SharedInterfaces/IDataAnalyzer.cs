@@ -9,7 +9,7 @@ namespace SharedInterfaces
     public interface IDataAnalyzer
     {
         event EventHandler<string> ErrorEvent;
-        event EventHandler DetectedDifferenceEvent;
+        event EventHandler<string> DetectedDifferenceEvent;
         void Analyze(IEnumerable<IChangeableData> a, IEnumerable<IChangeableData> b);
     }
 }

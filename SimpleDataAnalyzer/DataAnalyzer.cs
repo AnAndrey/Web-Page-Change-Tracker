@@ -11,7 +11,7 @@ namespace SimpleDataAnalyzer
 {
     public class DataAnalyzer : IDataAnalyzer
     {
-        public event EventHandler DetectedDifferenceEvent;
+        public event EventHandler<string> DetectedDifferenceEvent;
         public event EventHandler<string> ErrorEvent;
        
         public void Analyze(IEnumerable<IChangeableData> receivedDataSet, IEnumerable<IChangeableData> presavedDataSet)
@@ -35,8 +35,7 @@ namespace SimpleDataAnalyzer
                     {
                         RaiseEventAboutDifferences("Stored value '{0}' and retrieved value '{1}' are different", 
                                                     preservedData.Value, 
-                                                    receivedData.Value.Value,
-                                                    DataCondition.Modified);
+                                                    receivedData.Value.Value);
                     }
                     else
                     {
@@ -49,8 +48,7 @@ namespace SimpleDataAnalyzer
                 }
                 RaiseEventAboutDifferences("Found new info! Name '{0}' and value '{1}'.", 
                                             receivedData.Key, 
-                                            receivedData.Value.Value, 
-                                            DataCondition.SomeThingNew);
+                                            receivedData.Value.Value);
             }
 
             ReportAboutOutdatedItems(presavedDataDictionary);
@@ -62,16 +60,18 @@ namespace SimpleDataAnalyzer
             {
                 RaiseEventAboutDifferences("Not actual data: Name '{0}' and value '{1}'.", 
                                             x.Key, 
-                                            x.Value.Value, 
-                                            DataCondition.Outdated);
+                                            x.Value.Value);
                 return true;
             });
         }
 
-        private void RaiseEventAboutDifferences(string format, string arg0, string arg1, DataCondition state)
+        private void RaiseEventAboutDifferences(string format, string arg0, string arg1)
         {
-            if(DetectedDifferenceEvent != null)
-                DetectedDifferenceEvent(this, new DataChangedEventArgs(format, arg0, arg1, state));
+            if (DetectedDifferenceEvent != null)
+            {
+                string message = String.Format(format, arg0, arg1);
+                DetectedDifferenceEvent(this, message);
+            }
         }
     }
 
