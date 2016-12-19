@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharedInterfaces
 {
-    public interface IDataPreserver
+    public interface INotificationManager
     {
-        void SaveData(IEnumerable<IChangeableData> data);
-        void CleanStorage();
+        void NotifyAbout(IEnumerable<string> info);
     }
 }

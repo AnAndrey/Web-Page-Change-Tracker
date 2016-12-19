@@ -43,7 +43,8 @@
     <Compile Include="IChangeableData.cs" />
     <Compile Include="IDataAnalyzer.cs" />
     <Compile Include="IDataFetcher.cs" />
-    <Compile Include="IDataPreserver.cs" />
+    <Compile Include="IDataStorageProvider.cs" />
+    <Compile Include="INotificationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -10,8 +10,18 @@ using Z.EntityFramework.Extensions;
 
 namespace MagistrateCourts
 {
-    public class SqlDataPreserver : IDataPreserver
+    public class SqlDataStorageProvider : IDataStorageProvider
     {
+        public IEnumerable<IChangeableData> GetData()
+        {
+            IEnumerable<IChangeableData> data = null;
+            using (CourtDBContext dbContext = new CourtDBContext())
+            {
+                data = dbContext.CourtRegions.Include("CourtDistricts").Include("CourtDistricts.CourtLocations").ToList();
+            }
+
+            return data;
+        }
         public void CleanStorage()
         {
             using (CourtDBContext dbContext = new CourtDBContext())
