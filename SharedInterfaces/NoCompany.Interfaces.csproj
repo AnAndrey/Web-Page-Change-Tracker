@@ -7,8 +7,8 @@
     <ProjectGuid>{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharedInterfaces</RootNamespace>
-    <AssemblyName>SharedInterfaces</AssemblyName>
+    <RootNamespace>NoCompany.Interfaces</RootNamespace>
+    <AssemblyName>NoCompany.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

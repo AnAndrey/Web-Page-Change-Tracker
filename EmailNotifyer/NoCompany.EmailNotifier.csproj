@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{981A45EA-8A4B-46ED-A0B3-3FD706EE4EB3}</ProjectGuid>
+    <ProjectGuid>{34684EBF-8339-4720-830C-D6778EC6D439}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleDataAnalyzer</RootNamespace>
-    <AssemblyName>SimpleDataAnalyzer</AssemblyName>
+    <RootNamespace>NoCompany.EmailNotifier</RootNamespace>
+    <AssemblyName>NoCompany.EmailNotifier</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,16 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAnalyzer.cs" />
+    <Compile Include="EmailNotifier.cs" />
+    <Compile Include="ChangesNotifierFacade.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="MessageFields.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SharedInterfaces\SharedInterfaces.csproj">
+    <ProjectReference Include="..\SharedInterfaces\NoCompany.Interfaces.csproj">
       <Project>{eabc9645-d4ba-47eb-8bd8-2e72760d7ce3}</Project>
-      <Name>SharedInterfaces</Name>
+      <Name>NoCompany.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

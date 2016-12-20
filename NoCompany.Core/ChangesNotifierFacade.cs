@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharedInterfaces;
+using NoCompany.Interfaces;
 
-namespace EmailNotifyer
+namespace NoCompany.Core
 {
-    public class EmailNotifierFacade
+    public class ChangesNotifierFacade
     {
         private List<string> listOfChanges = new List<string>();
         private List<string> listOfErrors = new List<string>();
@@ -18,7 +18,7 @@ namespace EmailNotifyer
         
         public INotificationManager Notificator { get; private set; }
 
-        public EmailNotifierFacade(IDataAnalyzer analyzer, 
+        public ChangesNotifierFacade(IDataAnalyzer analyzer, 
                                    IDataFetcher externalSource, 
                                    IDataStorageProvider dataStorage, 
                                    INotificationManager notificator)
@@ -49,14 +49,13 @@ namespace EmailNotifyer
 
         public void FindAndNotify()
         {
-            EmailNotifyer rr = new EmailNotifyer();
             List<string> ll = new List<string>();
             ll.Add("dsfds67567fdsf");
             ll.Add("87656dsfdsfdsf");
             ll.Add("768768dsfdsfdsf");
             ll.Add("345456dsf333333333333333333333333333333333333333333333dsfdsf");
             ll.Add("123dsfdsfdsf");
-            rr.NotifyAbout(ll);
+            Notificator.NotifyAbout(ll);
             return;
             Analyzer.DetectedDifferenceEvent += Analyzer_DetectedDifferenceEvent;
             Analyzer.ErrorEvent += Analyzer_ErrorEvent;

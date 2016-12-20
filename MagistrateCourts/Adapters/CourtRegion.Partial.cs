@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharedInterfaces;
+using NoCompany.Interfaces;
 
-namespace MagistrateCourts
+namespace NoCompany.Data
 {
     public partial class CourtRegion : IChangeableData
     {

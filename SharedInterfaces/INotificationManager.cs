@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedInterfaces
+namespace NoCompany.Interfaces
 {
     public interface INotificationManager
     {
-        void NotifyAbout(IEnumerable<string> info);
+        void NotifyAbout<T>(IEnumerable<T> info);
     }
 }

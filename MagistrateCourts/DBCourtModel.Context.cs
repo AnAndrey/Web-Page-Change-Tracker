@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MagistrateCourts
+namespace NoCompany.Data
 {
     using System;
     using System.Data.Entity;

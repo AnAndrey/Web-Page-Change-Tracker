@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharedInterfaces;
-using System.IO;
-using System.Data;
+using NoCompany.Interfaces;
 
-namespace SimpleDataAnalyzer
+namespace NoCompany.DataAnalyzer
 {
     public class DataAnalyzer : IDataAnalyzer
     {
@@ -72,24 +68,6 @@ namespace SimpleDataAnalyzer
                 string message = String.Format(format, arg0, arg1);
                 DetectedDifferenceEvent(this, message);
             }
-        }
-    }
-
-    internal static class ChageableDataExtensions
-    {
-        internal static Dictionary<string, IChangeableData> ToDictionary(this IEnumerable<IChangeableData> dataSet)
-        {
-            var dictionary = new Dictionary<string, IChangeableData>();
-            foreach (IChangeableData item in dataSet)
-            {
-                IChangeableData tempValue = null;
-                if (!dictionary.TryGetValue(item.Name, out tempValue))
-                {
-                    dictionary.Add(item.Name, item);
-                }
-            }
-
-            return dictionary;
         }
     }
 }

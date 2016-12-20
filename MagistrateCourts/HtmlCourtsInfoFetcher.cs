@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SharedInterfaces;
+using NoCompany.Interfaces;
 using HtmlAgilityPack;
 using System.Net;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace MagistrateCourts
+namespace NoCompany.Data
 {
     public class HtmlCourtsInfoFetcher : IDataFetcher
     {

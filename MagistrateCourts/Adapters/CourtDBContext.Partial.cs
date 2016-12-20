@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MagistrateCourts
+namespace NoCompany.Data
 {
     public partial class CourtDBContext
     {

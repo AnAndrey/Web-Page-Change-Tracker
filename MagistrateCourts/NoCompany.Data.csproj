@@ -7,8 +7,8 @@
     <ProjectGuid>{9D305428-8FBC-46D0-A286-3B802AF483D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MagistrateCourts</RootNamespace>
-    <AssemblyName>MagistrateCourts</AssemblyName>
+    <RootNamespace>NoCompany.Data</RootNamespace>
+    <AssemblyName>NoCompany.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -152,9 +152,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedInterfaces\SharedInterfaces.csproj">
+    <ProjectReference Include="..\SharedInterfaces\NoCompany.Interfaces.csproj">
       <Project>{eabc9645-d4ba-47eb-8bd8-2e72760d7ce3}</Project>
-      <Name>SharedInterfaces</Name>
+      <Name>NoCompany.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

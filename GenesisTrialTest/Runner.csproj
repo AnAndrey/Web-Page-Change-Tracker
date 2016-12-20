@@ -98,21 +98,25 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmailNotifyer\EmailNotifier.csproj">
+    <ProjectReference Include="..\EmailNotifyer\NoCompany.EmailNotifier.csproj">
       <Project>{34684ebf-8339-4720-830c-d6778ec6d439}</Project>
-      <Name>EmailNotifier</Name>
+      <Name>NoCompany.EmailNotifier</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MagistrateCourts\MagistrateCourts.csproj">
+    <ProjectReference Include="..\MagistrateCourts\NoCompany.Data.csproj">
       <Project>{9d305428-8fbc-46d0-a286-3b802af483d6}</Project>
-      <Name>MagistrateCourts</Name>
+      <Name>NoCompany.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SharedInterfaces\SharedInterfaces.csproj">
+    <ProjectReference Include="..\NoCompany.Core\NoCompany.Core.csproj">
+      <Project>{f1444227-bd09-4013-83b9-116448c2af26}</Project>
+      <Name>NoCompany.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedInterfaces\NoCompany.Interfaces.csproj">
       <Project>{eabc9645-d4ba-47eb-8bd8-2e72760d7ce3}</Project>
-      <Name>SharedInterfaces</Name>
+      <Name>NoCompany.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SimpleDataAnalyzer\SimpleDataAnalyzer.csproj">
+    <ProjectReference Include="..\SimpleDataAnalyzer\NoCompany.DataAnalyzer.csproj">
       <Project>{981a45ea-8a4b-46ed-a0b3-3fd706ee4eb3}</Project>
-      <Name>SimpleDataAnalyzer</Name>
+      <Name>NoCompany.DataAnalyzer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

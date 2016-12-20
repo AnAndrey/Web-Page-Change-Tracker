@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharedInterfaces;
+using NoCompany.Interfaces;
 using System.Data.SqlClient;
 using System.Data;
 using Z.EntityFramework.Extensions;
 
-namespace MagistrateCourts
+namespace NoCompany.Data
 {
     public class SqlDataStorageProvider : IDataStorageProvider
     {

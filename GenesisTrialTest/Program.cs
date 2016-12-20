@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using SimpleDataAnalyzer;
-using System.Data.SqlClient;
-using System.Text;
-using System.Net;
-using MagistrateCourts;
-using System.Linq;
-using EmailNotifyer;
-using SharedInterfaces;
+using NoCompany.Data;
+using NoCompany.Interfaces;
+using NoCompany.Core;
+using NoCompany.DataAnalyzer;
 
-namespace GenesisTrialTest
+
+namespace NoCompany.Runner
 {
     class Program
     {
@@ -27,10 +22,11 @@ namespace GenesisTrialTest
         {
             try
             {
-                EmailNotifierFacade f = new EmailNotifierFacade(new DataAnalyzer(),
+                
+                ChangesNotifierFacade f = new ChangesNotifierFacade(new DataAnalyzer.DataAnalyzer(),
                                                                 new HtmlCourtsInfoFetcher(),
                                                                 new SqlDataStorageProvider(),
-                                                                null);
+                                                                new EmailNotifier.EmailNotifier());
 
                 f.FindAndNotify();
             }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-namespace SharedInterfaces
+namespace NoCompany.Interfaces
 {
     /// <summary>
     ///     Allows an object to implement a DataAdapter, and represents a set of methods

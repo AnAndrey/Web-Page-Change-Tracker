@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharedInterfaces;
-namespace MagistrateCourts
+using NoCompany.Interfaces;
+namespace NoCompany.Data
 {
     public partial class CourtDistrict : IChangeableData
     {

@@ -5,13 +5,15 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "GenesisTrialTest\Runner.csproj", "{701FA741-CD70-4B01-9A1C-56A07E8C07F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailNotifier", "EmailNotifyer\EmailNotifier.csproj", "{34684EBF-8339-4720-830C-D6778EC6D439}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.EmailNotifier", "EmailNotifyer\NoCompany.EmailNotifier.csproj", "{34684EBF-8339-4720-830C-D6778EC6D439}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedInterfaces", "SharedInterfaces\SharedInterfaces.csproj", "{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.Interfaces", "SharedInterfaces\NoCompany.Interfaces.csproj", "{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDataAnalyzer", "SimpleDataAnalyzer\SimpleDataAnalyzer.csproj", "{981A45EA-8A4B-46ED-A0B3-3FD706EE4EB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.DataAnalyzer", "SimpleDataAnalyzer\NoCompany.DataAnalyzer.csproj", "{981A45EA-8A4B-46ED-A0B3-3FD706EE4EB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagistrateCourts", "MagistrateCourts\MagistrateCourts.csproj", "{9D305428-8FBC-46D0-A286-3B802AF483D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.Data", "MagistrateCourts\NoCompany.Data.csproj", "{9D305428-8FBC-46D0-A286-3B802AF483D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.Core", "NoCompany.Core\NoCompany.Core.csproj", "{F1444227-BD09-4013-83B9-116448C2AF26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9D305428-8FBC-46D0-A286-3B802AF483D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D305428-8FBC-46D0-A286-3B802AF483D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D305428-8FBC-46D0-A286-3B802AF483D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1444227-BD09-4013-83B9-116448C2AF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1444227-BD09-4013-83B9-116448C2AF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1444227-BD09-4013-83B9-116448C2AF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1444227-BD09-4013-83B9-116448C2AF26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

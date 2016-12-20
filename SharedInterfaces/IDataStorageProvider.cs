@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SharedInterfaces
+namespace NoCompany.Interfaces
 {
     public interface IDataStorageProvider:IDataFetcher
     {
