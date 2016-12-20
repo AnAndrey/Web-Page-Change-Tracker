@@ -5,25 +5,48 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Configuration;
+using SharedInterfaces;
 
 namespace EmailNotifyer
 {
-    public class EmailNotifyer
+    public class EmailNotifyer:INotificationManager
     {
-        public void Notify()
+
+        public static string ToHtmlTable<T>(IEnumerable<T> list)
+        {
+            var result = new StringBuilder();
+            result.Append("<table style  > ");
+
+            result.AppendFormat("<th >{0}</th >", "Description");
+
+            foreach (var item in list)
+            {
+                result.AppendFormat("<tr >");
+                
+                result.AppendFormat("<td >{0}</td >", item );
+                
+                result.AppendLine("</tr >");
+            }
+        
+            result.Append("</table >"); 
+            return result.ToString();
+        }
+
+        public void NotifyAbout(IEnumerable<string> info)
         {
             var messageFields = (MessageFields)ConfigurationManager.GetSection("EmailNotifierGroup/MessageFields");
-            
+
             using (MailMessage mm = new MailMessage(messageFields.From, messageFields.To))
             {
                 mm.Subject = messageFields.Subject;
-                mm.Body = messageFields.Body;
+                mm.Body = String.Format(messageFields.BodyTemplate, DateTime.UtcNow.ToString(), ToHtmlTable(info));
                 mm.IsBodyHtml = messageFields.IsBodyHtml;
                 using (SmtpClient sc = new SmtpClient())
                 {
                     sc.Send(mm);
                 }
             }
+
         }
     }
 
@@ -57,12 +80,12 @@ namespace EmailNotifyer
             }
         }
 
-        [ConfigurationProperty("Body", DefaultValue = "", IsRequired = false)]
-        public string Body
+        [ConfigurationProperty("BodyTemplate", DefaultValue = "", IsRequired = false)]
+        public string BodyTemplate
         {
             get
             {
-                return (string)this["Body"];
+                return (string)this["BodyTemplate"];
             }
         }
 

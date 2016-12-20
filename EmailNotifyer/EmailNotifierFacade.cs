@@ -50,7 +50,13 @@ namespace EmailNotifyer
         public void FindAndNotify()
         {
             EmailNotifyer rr = new EmailNotifyer();
-            rr.Notify();
+            List<string> ll = new List<string>();
+            ll.Add("dsfds67567fdsf");
+            ll.Add("87656dsfdsfdsf");
+            ll.Add("768768dsfdsfdsf");
+            ll.Add("345456dsf333333333333333333333333333333333333333333333dsfdsf");
+            ll.Add("123dsfdsfdsf");
+            rr.NotifyAbout(ll);
             return;
             Analyzer.DetectedDifferenceEvent += Analyzer_DetectedDifferenceEvent;
             Analyzer.ErrorEvent += Analyzer_ErrorEvent;
