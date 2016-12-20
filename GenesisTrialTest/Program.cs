@@ -1,34 +1,27 @@
 ﻿using System;
-using NoCompany.Data;
 using NoCompany.Interfaces;
-using NoCompany.Core;
-using NoCompany.DataAnalyzer;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Configuration;
+using System.Configuration;
 
-
-namespace NoCompany.Runner
+namespace GenesisTrialTest
 {
     class Program
     {
-        public static void EntryPoint()
-        {
             // 1. Init storage connection (IStorageConnector)
             // 2. Init Reader, set parser (IDataFetcher)
             // 3. Init changes detector   (IChangeDetector)
             // 4. Init notifyer           (INotifyer)  
             // 5. Read ChangeableData
             // 6. Compare -> Store:Notify and Store
-        }
         static void Main(string[] args)
         {
             try
             {
-                
-                ChangesNotifierFacade f = new ChangesNotifierFacade(new DataAnalyzer.DataAnalyzer(),
-                                                                new HtmlCourtsInfoFetcher(),
-                                                                new SqlDataStorageProvider(),
-                                                                new EmailNotifier.EmailNotifier());
-
-                f.FindAndNotify();
+                var container = new UnityContainer();
+                container.LoadConfiguration();
+                ChangesNotifierFacade noty = container.Resolve<ChangesNotifierFacade>();
+                noty.FindAndNotify();
             }
             catch(Exception ex)
             {

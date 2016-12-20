@@ -24,24 +24,27 @@ namespace NoCompany.Core
                                    INotificationManager notificator)
         {
             Analyzer = analyzer;
+            Analyzer.DetectedDifferenceEvent += Analyzer_DetectedDifferenceEvent;
+            Analyzer.ErrorEvent += Analyzer_ErrorEvent;
+
             ExternalSource = externalSource;
             DataStorage = dataStorage;
             Notificator = notificator;
             
         }
 
-        private void Notify()
+        protected virtual void Notify()
         {
             Notificator.NotifyAbout(listOfChanges);
         }
 
-        private void Analyzer_ErrorEvent(object sender, string e)
+        protected virtual void Analyzer_ErrorEvent(object sender, string e)
         {
             if(!String.IsNullOrEmpty(e))
                 listOfErrors.Add(e);
         }
 
-        private void Analyzer_DetectedDifferenceEvent(object sender, string e)
+        protected virtual void Analyzer_DetectedDifferenceEvent(object sender, string e)
         {
             if (!String.IsNullOrEmpty(e))
                 listOfChanges.Add(e);
@@ -49,17 +52,6 @@ namespace NoCompany.Core
 
         public void FindAndNotify()
         {
-            List<string> ll = new List<string>();
-            ll.Add("dsfds67567fdsf");
-            ll.Add("87656dsfdsfdsf");
-            ll.Add("768768dsfdsfdsf");
-            ll.Add("345456dsf333333333333333333333333333333333333333333333dsfdsf");
-            ll.Add("123dsfdsfdsf");
-            Notificator.NotifyAbout(ll);
-            return;
-            Analyzer.DetectedDifferenceEvent += Analyzer_DetectedDifferenceEvent;
-            Analyzer.ErrorEvent += Analyzer_ErrorEvent;
-
             //Get Freash data
             var receivedData = ExternalSource.GetData();
 
@@ -70,7 +62,6 @@ namespace NoCompany.Core
             {
                 Analyzer.Analyze(receivedData, presavedData);
                 Notify();
-
             }
 
             // Clear All old data
