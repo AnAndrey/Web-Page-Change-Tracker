@@ -5,10 +5,10 @@ using System.Linq;
 namespace NoCompany.Interfaces
 {
     /// <summary>
-    ///     Allows an object to implement a DataAdapter, and represents a set of methods
-    ///     and mapping action-related properties that are used to fill and update a System.Data.DataSet
+    ///     Allows an object to implement a DataProvider, and represents a method
+    ///     that are used to retrieve requirable information
     /// </summary>
-    public interface IDataFetcher
+    public interface IDataProvider
     {
         IEnumerable<IChangeableData> GetData();
         

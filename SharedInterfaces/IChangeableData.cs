@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace NoCompany.Interfaces
 {
-    
+    /// <summary>
+    ///     Allows an object to implement a ChangeableData, and represents a cantainer
+    ///     for a hierarchical data with three structure.
+    /// </summary>
     public interface IChangeableData
     {
         string Value { get; }

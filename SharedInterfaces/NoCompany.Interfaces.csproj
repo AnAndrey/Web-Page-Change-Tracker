@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="IChangeableData.cs" />
     <Compile Include="IDataAnalyzer.cs" />
-    <Compile Include="IDataFetcher.cs" />
+    <Compile Include="IDataProvider.cs" />
     <Compile Include="IDataStorageProvider.cs" />
     <Compile Include="INotificationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

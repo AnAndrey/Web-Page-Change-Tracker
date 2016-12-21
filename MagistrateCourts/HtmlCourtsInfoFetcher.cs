@@ -7,11 +7,20 @@ using HtmlAgilityPack;
 using System.Net;
 using System.IO;
 using System.Threading.Tasks;
-
+using NoCompany.Data.Properties;
 namespace NoCompany.Data
 {
-    public class HtmlCourtsInfoFetcher : IDataFetcher
+    public class HtmlCourtsInfoFetcher : IDataProvider
     {
+        private readonly int c_retryCount = 5;
+        private readonly int c_maxDegreeOfParallelism = 20;
+        public HtmlCourtsInfoFetcher() { }
+        
+        public HtmlCourtsInfoFetcher(int retryCount, int maxDegreeOfParallelism)
+        {
+            c_retryCount = retryCount;
+            c_maxDegreeOfParallelism = maxDegreeOfParallelism;
+        }
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
@@ -21,7 +30,7 @@ namespace NoCompany.Data
             }
             
             WebClient webClient = new WebClient() { Encoding = encoding };
-            for (int t = 0; t < 5; t++)
+            for (int t = 0; t < c_retryCount; t++)
             {
                 try
                 {
@@ -48,36 +57,40 @@ namespace NoCompany.Data
         private IEnumerable<IChangeableData> GetAllCurtRegions()
         {
             const string sudrf = "https://sudrf.ru";
+            const string magistratCourtsNodeXPath = "//a[@href and @title='Участки мировых судей']";
+            const string href = "href";
+            const string option = "option";
 
             var list = new List<string>();
             HtmlDocument doc = LoadHtmlDocument(sudrf, Encoding.UTF8);
             if (doc == null)
             {
-                Console.WriteLine("Can't load Regions");
-                return null;
+                throw new HtmlRoutineException(Resources.Error_FailedToLoadMainPage);
             }
 
-            var magistratCourtsLinkNode = doc.DocumentNode.SelectSingleNode("//a[@href and @title='Участки мировых судей']");
+            var magistratCourtsLinkNode = doc.DocumentNode.SelectSingleNode(magistratCourtsNodeXPath);
             if (magistratCourtsLinkNode == null)
-                throw new Exception("redesing: Node is not found.");
+            {
+                throw new HtmlRoutineException(Resources.Error_NodeIsNotFound, magistratCourtsNodeXPath);
+            }
 
-            string magistrateCourtsLink = magistratCourtsLinkNode.Attributes["href"].Value;
+            string magistrateCourtsLink = magistratCourtsLinkNode.Attributes[href].Value;
 
             if (String.IsNullOrEmpty(magistrateCourtsLink))
             {
-                throw new Exception("redesing: href is not found.");
+                throw new HtmlRoutineException(Resources.Error_AttributeIsNotFound, href, magistratCourtsNodeXPath);
             }
 
-            HtmlNode.ElementsFlags.Remove("option");
+            HtmlNode.ElementsFlags.Remove(option);
             HtmlDocument allCourtRegionsDoc = LoadHtmlDocument(sudrf + magistrateCourtsLink, Encoding.UTF8);
             if (allCourtRegionsDoc == null)
             {
-                return null;
+                throw new HtmlRoutineException(Resources.Error_FailedToLoadRegions);
             }
 
             var allCourtRegionsNode = allCourtRegionsDoc.DocumentNode.SelectSingleNode("//select[@id='ms_subj']");
 
-            return allCourtRegionsNode.Descendants("option").Skip(1)
+            return allCourtRegionsNode.Descendants(option).Skip(1)
                     .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value))
                     .Cast<IChangeableData>().ToList();
         }
@@ -85,13 +98,9 @@ namespace NoCompany.Data
         public IEnumerable<IChangeableData> GetData()
         {
             var regions = GetAllCurtRegions();
-            if (regions == null)
-            {
-                return null;
-            }
-  
-            Parallel.ForEach( regions, new ParallelOptions() { MaxDegreeOfParallelism = 20}, region =>
-                    
+
+            Parallel.ForEach(regions, new ParallelOptions() { MaxDegreeOfParallelism = c_maxDegreeOfParallelism }, region =>
+
                     {
                         if (region.Value == "30")
                         {
@@ -106,6 +115,7 @@ namespace NoCompany.Data
                             }
                         }
                     });
+
             return regions;
         }
 
@@ -154,9 +164,9 @@ namespace NoCompany.Data
             }
 
             return searchResultTbl.Select(n => new CourtDistrict(n.Element("a").InnerText,
-                                                                       n.SelectSingleNode(".//div[@class='courtInfoCont']//a").InnerText))
-                                  .Cast<IChangeableData>()
-                                  .ToList();
+                                                                 n.SelectSingleNode(".//div[@class='courtInfoCont']//a").InnerText))
+                                                                  .Cast<IChangeableData>()
+                                                                  .ToList();
         }
 
     }

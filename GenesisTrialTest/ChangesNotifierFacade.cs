@@ -2,28 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoCompany.Interfaces;
-
+using CodeContracts;
+using GenesisTrialTest.Runner.Properties;
 namespace GenesisTrialTest
 {
+
+    internal class MyException : Exception
+    {
+        internal MyException(string message) : base(message)
+        {
+
+        }
+    }
     public class ChangesNotifierFacade
     {
         private List<string> listOfChanges = new List<string>();
         private List<string> listOfErrors = new List<string>();
 
         public IDataAnalyzer Analyzer { get; private set; }
-        public IDataFetcher ExternalSource { get; private set; }
+        public IDataProvider ExternalSource { get; private set; }
         public IDataStorageProvider DataStorage { get; private set; }
         
         public INotificationManager Notificator { get; private set; }
 
         public ChangesNotifierFacade(IDataAnalyzer analyzer, 
-                                   IDataFetcher externalSource, 
+                                   IDataProvider externalSource, 
                                    IDataStorageProvider dataStorage, 
                                    INotificationManager notificator)
         {
+            Requires.NotNull(analyzer, "analyzer");
+            Requires.NotNull(externalSource, "externalSource");
+            Requires.NotNull(dataStorage, "dataStorage");
+            Requires.NotNull(notificator, "notificator");
+
             Analyzer = analyzer;
             Analyzer.DetectedDifferenceEvent += Analyzer_DetectedDifferenceEvent;
-            Analyzer.ErrorEvent += Analyzer_ErrorEvent;
 
             ExternalSource = externalSource;
             DataStorage = dataStorage;
@@ -36,12 +49,6 @@ namespace GenesisTrialTest
                 Notificator.NotifyAbout(listOfChanges);
         }
 
-        protected virtual void Analyzer_ErrorEvent(object sender, string e)
-        {
-            if(!String.IsNullOrEmpty(e))
-                listOfErrors.Add(e);
-        }
-
         protected virtual void Analyzer_DetectedDifferenceEvent(object sender, string e)
         {
             if (!String.IsNullOrEmpty(e))
@@ -52,6 +59,7 @@ namespace GenesisTrialTest
         {
             //Get Freash data
             var receivedData = ExternalSource.GetData();
+            Assumes.True(receivedData != null && receivedData.Any(), Resources.Error_LoadExternalData) ;
 
             //Get old data
             var presavedData = DataStorage.GetData();

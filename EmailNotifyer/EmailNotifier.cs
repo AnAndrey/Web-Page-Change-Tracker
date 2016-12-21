@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using CodeContracts;
 using System.Net.Mail;
 using System.Configuration;
 using NoCompany.Interfaces;
@@ -12,13 +12,16 @@ namespace NoCompany.EmailNotifier
     public class EmailNotifier : INotificationManager
     {
         private readonly string _sectionName = "EmailNotifierGroup/MessageFields";
-        public EmailNotifier(string sectionName = null)
+        public EmailNotifier() { }
+        public EmailNotifier(string sectionName)
         {
-            if (!String.IsNullOrEmpty(sectionName))
-                _sectionName = sectionName;
+            Requires.NotNullOrEmpty(sectionName, "sectionName");
+            _sectionName = sectionName;
         }
         public void NotifyAbout<T>(IEnumerable<T> info)
         {
+            Requires.NotNullOrEmpty(info, "info");
+
             using (MailMessage mm = CreateMessage(info))
             {
                 using (SmtpClient sc = new SmtpClient())

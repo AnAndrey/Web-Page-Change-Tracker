@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoCompany.Interfaces;
-using System.Data.SqlClient;
 using System.Data;
-using Z.EntityFramework.Extensions;
+using CodeContracts;
 
 namespace NoCompany.Data
 {
@@ -17,7 +13,9 @@ namespace NoCompany.Data
             IEnumerable<IChangeableData> data = null;
             using (CourtDBContext dbContext = new CourtDBContext())
             {
-                data = dbContext.CourtRegions.Include("CourtDistricts").Include("CourtDistricts.CourtLocations").ToList();
+                data = dbContext.CourtRegions.Include("CourtDistricts")
+                                             .Include("CourtDistricts.CourtLocations")
+                                             .ToList();
             }
 
             return data;
@@ -32,13 +30,15 @@ namespace NoCompany.Data
 
         public void SaveData(IEnumerable<IChangeableData> data)
         {
+            Requires.NotNullOrEmpty(data, "data");
             InsertAllRegions(data);
         }
 
         private void InsertAllRegions(IEnumerable<IChangeableData> regionsRaw)
         {
             Dictionary<string, CourtRegion> regionDictionary = null;
-            using (CourtDBContext dbContext = new CourtDBContext())
+            CourtDBContext dbContext = new CourtDBContext();
+            using (dbContext)
             {
                 dbContext.BulkInsert(regionsRaw.Cast<CourtRegion>());
                 regionDictionary = dbContext.CourtRegions.ToDictionary(x => x.Name);
@@ -57,7 +57,7 @@ namespace NoCompany.Data
                 dbContext.BulkInsert(districtsWithParentId);
                 savedDistricts = dbContext.CourtDistricts.ToDictionary(x => x.Name);
             }
-            InsertLocationsByDistrict(savedDistricts, districtsWithParentId);
+            InsertAllLocations(savedDistricts, districtsWithParentId);
         }
 
         private List<CourtDistrict> SetParentIdToDistricts(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
@@ -82,7 +82,7 @@ namespace NoCompany.Data
             return districtsWithParentId;
         }
 
-        private void InsertLocationsByDistrict(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
+        private void InsertAllLocations(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
         {
             List<CourtLocation> locationsToSave = SetParentIdToLocations(districtsSaved, districtsRaw);
 

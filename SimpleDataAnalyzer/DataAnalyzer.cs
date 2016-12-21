@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoCompany.Interfaces;
+using CodeContracts;
+using NoCompany.DataAnalyzer.Properties;
 
 namespace NoCompany.DataAnalyzer
 {
     public class DataAnalyzer : IDataAnalyzer
     {
         public event EventHandler<string> DetectedDifferenceEvent;
-        public event EventHandler<string> ErrorEvent;
        
         public void Analyze(IEnumerable<IChangeableData> receivedDataSet, IEnumerable<IChangeableData> presavedDataSet)
         {
             if (receivedDataSet == null || presavedDataSet == null)
                 return;
-
             //To exclude shitty duplicates in receivedDataSet
             var receivedDataDictionary = receivedDataSet.ToDictionary();
             
@@ -29,7 +29,7 @@ namespace NoCompany.DataAnalyzer
                 {
                     if (String.Equals(preservedData.Value, receivedData.Value.Value, StringComparison.OrdinalIgnoreCase) == false)
                     {
-                        RaiseEventAboutDifferences("Stored value '{0}' and retrieved value '{1}' are different", 
+                        RaiseEventAboutDifferences(Resources.Event_ItemsAreNotEqual, 
                                                     preservedData.Value, 
                                                     receivedData.Value.Value);
                     }
@@ -42,9 +42,7 @@ namespace NoCompany.DataAnalyzer
                     presavedDataDictionary.Remove(receivedData.Key);
                     continue;
                 }
-                RaiseEventAboutDifferences("Found new info! Name '{0}' and value '{1}'.", 
-                                            receivedData.Key, 
-                                            receivedData.Value.Value);
+                RaiseEventAboutDifferences(Resources.Event_NewInfo, receivedData.Key, receivedData.Value.Value);
             }
 
             ReportAboutOutdatedItems(presavedDataDictionary);
@@ -54,9 +52,7 @@ namespace NoCompany.DataAnalyzer
         {
             outdatedItems.All(x =>
             {
-                RaiseEventAboutDifferences("Not actual data: Name '{0}' and value '{1}'.", 
-                                            x.Key, 
-                                            x.Value.Value);
+                RaiseEventAboutDifferences(Resources.Event_DataIsNotActual, x.Key, x.Value.Value);
                 return true;
             });
         }
