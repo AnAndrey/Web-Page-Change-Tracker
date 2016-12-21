@@ -8,7 +8,14 @@ namespace NoCompany.Interfaces
     /// </summary>
     public interface IDataStorageProvider:IDataProvider
     {
+        /// <summary>
+        /// Saves data in storage.
+        /// </summary>
         void SaveData(IEnumerable<IChangeableData> data);
+
+        /// <summary>
+        /// Clean data storage.
+        /// </summary>
         void CleanStorage();
     }
 }

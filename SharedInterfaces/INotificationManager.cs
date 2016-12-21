@@ -12,6 +12,9 @@ namespace NoCompany.Interfaces
     /// </summary>
     public interface INotificationManager
     {
+        /// <summary>
+        /// Executes notification process.
+        /// </summary>
         void NotifyAbout<T>(IEnumerable<T> info);
     }
 }

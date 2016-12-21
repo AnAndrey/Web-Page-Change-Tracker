@@ -10,8 +10,15 @@ namespace NoCompany.Interfaces
     /// </summary>
     public interface IDataProvider
     {
+        /// <summary>
+        /// Retrieve set of data from provider.
+        /// </summary>
         IEnumerable<IChangeableData> GetData();
-        
+
+        /// <summary>
+        /// Event to distinguish time consumable operations and hangs.
+        /// </summary>
+        event EventHandler<string> ImStillAlive;
     }
 
 

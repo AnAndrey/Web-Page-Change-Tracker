@@ -12,7 +12,14 @@ namespace NoCompany.Interfaces
     /// </summary>
     public interface IDataAnalyzer
     {
+        /// <summary>
+        /// Events about detected changes.
+        /// </summary>
         event EventHandler<string> DetectedDifferenceEvent;
+
+        /// <summary>
+        /// Analyzes input data and find changes.
+        /// </summary>
         void Analyze(IEnumerable<IChangeableData> a, IEnumerable<IChangeableData> b);
     }
 }
