@@ -18,7 +18,7 @@ namespace NoCompany.Interfaces
         /// <summary>
         /// Event to distinguish time consumable operations and hangs.
         /// </summary>
-        event EventHandler<string> ImStillAlive;
+        event EventHandler ImStillAlive;
     }
 
 

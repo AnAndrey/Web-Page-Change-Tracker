@@ -9,15 +9,20 @@ using System.IO;
 using System.Threading.Tasks;
 using NoCompany.Data.Properties;
 using System.Threading;
+using log4net;
+using System.Reflection;
 
 namespace NoCompany.Data
 {
     public class HtmlCourtsInfoFetcher : IDataProvider
     {
+        public static ILog logger = LogManager.GetLogger(typeof(HtmlCourtsInfoFetcher));
+
+
         private readonly int c_retryCount = 5;
         private readonly int c_maxDegreeOfParallelism = 20;
 
-        public event EventHandler<string> ImStillAlive;
+        public event EventHandler ImStillAlive;
 
         public HtmlCourtsInfoFetcher() { }
         
@@ -28,10 +33,12 @@ namespace NoCompany.Data
         }
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {
+            logger.Debug(MethodBase.GetCurrentMethod().Name);
+
             KeepTracking(Resources.Trace_HtmlLoad, url);
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
-                Console.WriteLine("Invalid URL '{0}'.", url);
+                logger.FatalFormat(Resources.Error_InValidUrl, url);
                 return null;
             }
             
@@ -51,10 +58,15 @@ namespace NoCompany.Data
                 }
                 catch (WebException wex)
                 {
-                    Console.WriteLine("Error - '{0}', attempt - '{1}'.", wex, t);
+
                     HttpWebResponse errorResponse = wex.Response as HttpWebResponse;
                     if (errorResponse != null && errorResponse.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        logger.WarnFormat(Resources.Error_SkipPage, url);
                         break;
+                    }
+
+                    logger.ErrorFormat(Resources.Error_FailedLoadPageRetry, wex, url, t, c_retryCount);
                 }
             }
             return null;
@@ -62,6 +74,8 @@ namespace NoCompany.Data
 
         private IEnumerable<IChangeableData> GetAllCurtRegions()
         {
+            logger.Debug(MethodBase.GetCurrentMethod().Name);
+
             const string sudrf = "https://sudrf.ru";
             const string magistratCourtsNodeXPath = "//a[@href and @title='Участки мировых судей']";
             const string href = "href";
@@ -106,18 +120,21 @@ namespace NoCompany.Data
 
         private void KeepTracking(string format, params object[] arg )
         {
-            ImStillAlive(this, String.Format(format, arg));
+            logger.DebugFormat(format, arg);
+            if(ImStillAlive != null)
+                ImStillAlive(this, new EventArgs());
         }
 
         public IEnumerable<IChangeableData> GetData(CancellationToken cancellationToken)
         {
+            logger.Debug(MethodBase.GetCurrentMethod().Name);
+
             cancellationToken.ThrowIfCancellationRequested();
 
             var regions = GetAllCurtRegions();
 
             cancellationToken.ThrowIfCancellationRequested();
             Parallel.ForEach(regions, new ParallelOptions() { MaxDegreeOfParallelism = c_maxDegreeOfParallelism }, region =>
-
                     {
                         if (region.Value == "30")
                         {
@@ -142,24 +159,24 @@ namespace NoCompany.Data
         {
             KeepTracking(Resources.Trace_LoadLocations, site);
 
-            string str = site + "/modules.php?name=terr";
-            HtmlDocument allCourtDistrcits = LoadHtmlDocument(str, Encoding.UTF8);
-            if (allCourtDistrcits == null)
+            string locationsUrl = site + "/modules.php?name=terr";
+            HtmlDocument allLocations = LoadHtmlDocument(locationsUrl, Encoding.UTF8);
+            if (allLocations == null)
             {
-                Console.WriteLine("Couldnt open site '{0}'", site);
+                logger.ErrorFormat(Resources.Error_FailedToLocationsPage, site);
                 return null;
             }
 
-            HtmlNode contentTable = allCourtDistrcits.DocumentNode.SelectSingleNode("//div[@class='content']");
+            HtmlNode contentTable = allLocations.DocumentNode.SelectSingleNode("//div[@class='content']");
             if (contentTable == null)
             {
-                Console.WriteLine("Node is not found '{0}'", "//div[@class='content']");
+                logger.ErrorFormat(Resources.Error_LocationsTableFail, locationsUrl);
                 return null;                    
             }
             var territoryItems = contentTable.SelectNodes("div[@class='terr-item']");
             if (territoryItems == null)
             {
-                Console.WriteLine("Node is not found '{0}'", "div[@class='terr-item']");
+                logger.ErrorFormat(Resources.Error_LocationsTerritoryFail, locationsUrl);
                 return null;
             }
             return from n in territoryItems
@@ -171,17 +188,17 @@ namespace NoCompany.Data
         {
             KeepTracking(Resources.Trace_LoadDistrictsForRegion, regionNumber);
             const string getDistrictFormatString = "https://sudrf.ru/index.php?id=300&act=go_ms_search&searchtype=ms&var=true&ms_type=ms&court_subj={0}&ms_city=&ms_street=";
-            HtmlDocument allCourtDistrcits = LoadHtmlDocument(String.Format(getDistrictFormatString, regionNumber), Encoding.UTF8);
+            string districtUrl = String.Format(getDistrictFormatString, regionNumber);
+            HtmlDocument allCourtDistrcits = LoadHtmlDocument(districtUrl, Encoding.UTF8);
             if (allCourtDistrcits == null)
             {
-                Console.WriteLine("Can't load districts for region '{0}'", regionNumber);
-
+                logger.ErrorFormat(Resources.Error_FailedToLoadDistricts, regionNumber, districtUrl);
                 return null;
             }
             var searchResultTbl = allCourtDistrcits.DocumentNode.SelectNodes("//table[@class='msSearchResultTbl']//tr//td");
             if (searchResultTbl == null)
             {
-                Console.WriteLine("Node is not found '{0}' for region '{1}'", "//table[@class='msSearchResultTbl']//tr//td", regionNumber);
+                logger.ErrorFormat(Resources.Error_DistrictsTableFail, districtUrl);
                 return null;
             }
 

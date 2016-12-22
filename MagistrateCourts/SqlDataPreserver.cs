@@ -6,12 +6,15 @@ using CodeContracts;
 using System;
 using System.Threading;
 using NoCompany.Data.Properties;
+using log4net;
 
 namespace NoCompany.Data
 {
     public class SqlDataStorageProvider : IDataStorageProvider
     {
-        public event EventHandler<string> ImStillAlive;
+        public static ILog logger = LogManager.GetLogger(typeof(SqlDataStorageProvider));
+
+        public event EventHandler ImStillAlive;
 
         public IEnumerable<IChangeableData> GetData(CancellationToken cancellationToken)
         {
@@ -131,8 +134,9 @@ namespace NoCompany.Data
 
         private void KeepTracking(string format, params object[] arg)
         {
-
-            //throw new NotImplementedException();
+            logger.DebugFormat(format, arg);
+            if(ImStillAlive != null)
+                ImStillAlive(this, new EventArgs());
         }
 
     }

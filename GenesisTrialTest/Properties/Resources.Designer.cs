@@ -68,5 +68,32 @@ namespace GenesisTrialTest.Properties {
                 return ResourceManager.GetString("Error_LoadExternalData", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no preserved data..
+        /// </summary>
+        internal static string Info_NoPreservedData {
+            get {
+                return ResourceManager.GetString("Info_NoPreservedData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OperationHangTimeOut is &apos;{0}&apos;..
+        /// </summary>
+        internal static string Info_TimeOut {
+            get {
+                return ResourceManager.GetString("Info_TimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OperationHangTimeOut changes on - &apos;{0}&apos;..
+        /// </summary>
+        internal static string Info_TimeOutChange {
+            get {
+                return ResourceManager.GetString("Info_TimeOutChange", resourceCulture);
+            }
+        }
     }
 }

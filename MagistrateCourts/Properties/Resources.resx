@@ -120,14 +120,38 @@
   <data name="Error_AttributeIsNotFound" xml:space="preserve">
     <value>The attribute '{0}' value for node '{1}' is not found</value>
   </data>
+  <data name="Error_DistrictsTableFail" xml:space="preserve">
+    <value>Failed to find districts table on page '{0}'.</value>
+  </data>
+  <data name="Error_FailedLoadPageRetry" xml:space="preserve">
+    <value>Failed to load web page - {0}. \r\n Url - '{1}', attempt - '{2}' from '{3}'.</value>
+  </data>
+  <data name="Error_FailedToLoadDistricts" xml:space="preserve">
+    <value>Failed to load districts for particular region '{0}'. Url - '{1}'.</value>
+  </data>
   <data name="Error_FailedToLoadMainPage" xml:space="preserve">
     <value>Failed to load main page.</value>
   </data>
   <data name="Error_FailedToLoadRegions" xml:space="preserve">
     <value>Failed to load regions.</value>
   </data>
+  <data name="Error_FailedToLocationsPage" xml:space="preserve">
+    <value>Failed to locations page '{0}'.</value>
+  </data>
+  <data name="Error_InValidUrl" xml:space="preserve">
+    <value>Invalid URL '{0}'.</value>
+  </data>
+  <data name="Error_LocationsTableFail" xml:space="preserve">
+    <value>Failed to find locations table on page '{0}'.</value>
+  </data>
+  <data name="Error_LocationsTerritoryFail" xml:space="preserve">
+    <value>Failed to load locations territory. Page - '{0}'.</value>
+  </data>
   <data name="Error_NodeIsNotFound" xml:space="preserve">
     <value>Node '{0}' is not found.</value>
+  </data>
+  <data name="Error_SkipPage" xml:space="preserve">
+    <value>Skip page - '{0}'.</value>
   </data>
   <data name="Trace_AllCurtRegionsLoad" xml:space="preserve">
     <value>Load all curt regions.</value>

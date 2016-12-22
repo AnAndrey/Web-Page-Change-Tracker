@@ -120,4 +120,13 @@
   <data name="Error_LoadExternalData" xml:space="preserve">
     <value>Failed to load data from external source. Please, check the data provider.</value>
   </data>
+  <data name="Info_NoPreservedData" xml:space="preserve">
+    <value>There is no preserved data.</value>
+  </data>
+  <data name="Info_TimeOut" xml:space="preserve">
+    <value>OperationHangTimeOut is '{0}'.</value>
+  </data>
+  <data name="Info_TimeOutChange" xml:space="preserve">
+    <value>OperationHangTimeOut changes on - '{0}'.</value>
+  </data>
 </root>

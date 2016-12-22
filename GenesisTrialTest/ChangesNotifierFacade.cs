@@ -4,14 +4,18 @@ using System.Linq;
 using NoCompany.Interfaces;
 using CodeContracts;
 using GenesisTrialTest.Properties;
+using log4net;
+using System.Reflection;
 
 namespace GenesisTrialTest
 {
     public class ChangesNotifierFacade
     {
+        public static ILog logger = LogManager.GetLogger(typeof(ChangesNotifierFacade)); 
+
         private List<string> listOfChanges = new List<string>();
         private List<string> listOfErrors = new List<string>();
-        private const int s_defaultTimeOut = 30 * 1000;
+        private int _defaultTimeOut = 30 * 1000;
         public IDataAnalyzer Analyzer { get; private set; }
         public IDataProvider ExternalSource { get; private set; }
         public IDataStorageProvider DataStorage { get; private set; }
@@ -34,14 +38,16 @@ namespace GenesisTrialTest
             ExternalSource = externalSource;
             DataStorage = dataStorage;
             Notificator = notificator;
-
-            OperationHangTimeOut = s_defaultTimeOut;
         }
 
         protected virtual void Notify()
         {
-            if(listOfChanges.Any())
+
+            if (listOfChanges.Any())
+            {
+                logger.Debug(MethodBase.GetCurrentMethod().Name);
                 Notificator.NotifyAbout(listOfChanges);
+            }
         }
 
         protected virtual void Analyzer_DetectedDifferenceEvent(object sender, string e)
@@ -52,16 +58,12 @@ namespace GenesisTrialTest
 
         protected virtual IEnumerable<IChangeableData> GetExternalData()
         {
+            logger.Debug(MethodBase.GetCurrentMethod().Name);
+            logger.InfoFormat(Resources.Info_TimeOut, OperationHangTimeOut);
+
             using (HangWatcher watcher = new HangWatcher(OperationHangTimeOut))
             {
-                ExternalSource.ImStillAlive += (o, e) =>
-                {
-                    watcher.PostPone(OperationHangTimeOut);
-                    Console.WriteLine("NEw event - '{0}'.", e);
-                };
-
-                //Get Fresh data
-
+                ExternalSource.ImStillAlive += (o, e) => watcher.PostPone(OperationHangTimeOut);
                 return ExternalSource.GetData(watcher.Token);
             }
         }
@@ -70,28 +72,51 @@ namespace GenesisTrialTest
         /// Limits a time consumable operation in Milliseconds. 
         /// If time is out the OperationCanceledException will be raised.
         /// </summary>
-        public int OperationHangTimeOut { get; set; }
+        public int OperationHangTimeOut
+        {
+            get { return _defaultTimeOut; }
+            set
+            {
+                _defaultTimeOut = value;
+                logger.InfoFormat(Resources.Info_TimeOutChange, value);
+
+            }
+        }
         public void FindAndNotify()
         {
-           
-            var receivedData = GetExternalData();
+            logger.Debug(MethodBase.GetCurrentMethod().Name);
 
+            //Get Fresh data
+            var receivedData = GetExternalData();
+            //Get old data
             var presavedData = DataStorage.GetData();
 
             Assumes.True(receivedData != null && receivedData.Any(), Resources.Error_LoadExternalData) ;
-
-            //Get old data
-
-            if (presavedData != null)
+            try
             {
-                Analyzer.Analyze(receivedData, presavedData);
-                Notify();
-            }
+                if (presavedData != null)
+                {
+                    Analyzer.Analyze(receivedData, presavedData);
+                    Notify();
+                }
+                else
+                {
+                    logger.InfoFormat(Resources.Info_NoPreservedData);
 
-            // Clear All old data
-            DataStorage.CleanStorage();
-            // Save new data
-            DataStorage.SaveData(receivedData);
+                }
+            }
+            catch (System.Net.Mail.SmtpException ex)
+            {
+                logger.Error(ex);
+            }
+            finally
+            {
+                // Clear All old data
+                DataStorage.CleanStorage();
+                // Save new data
+                DataStorage.SaveData(receivedData);
+            }
+            
         }
     }
 }

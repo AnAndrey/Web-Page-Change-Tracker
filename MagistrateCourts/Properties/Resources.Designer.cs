@@ -70,6 +70,33 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to find districts table on page &apos;{0}&apos;..
+        /// </summary>
+        internal static string Error_DistrictsTableFail {
+            get {
+                return ResourceManager.GetString("Error_DistrictsTableFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load web page - {0}. \r\n Url - &apos;{1}&apos;, attempt - &apos;{2}&apos; from &apos;{3}&apos;..
+        /// </summary>
+        internal static string Error_FailedLoadPageRetry {
+            get {
+                return ResourceManager.GetString("Error_FailedLoadPageRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load districts for particular region &apos;{0}&apos;. Url - &apos;{1}&apos;..
+        /// </summary>
+        internal static string Error_FailedToLoadDistricts {
+            get {
+                return ResourceManager.GetString("Error_FailedToLoadDistricts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to load main page..
         /// </summary>
         internal static string Error_FailedToLoadMainPage {
@@ -88,11 +115,56 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to locations page &apos;{0}&apos;..
+        /// </summary>
+        internal static string Error_FailedToLocationsPage {
+            get {
+                return ResourceManager.GetString("Error_FailedToLocationsPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid URL &apos;{0}&apos;..
+        /// </summary>
+        internal static string Error_InValidUrl {
+            get {
+                return ResourceManager.GetString("Error_InValidUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to find locations table on page &apos;{0}&apos;..
+        /// </summary>
+        internal static string Error_LocationsTableFail {
+            get {
+                return ResourceManager.GetString("Error_LocationsTableFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load locations territory. Page - &apos;{0}&apos;..
+        /// </summary>
+        internal static string Error_LocationsTerritoryFail {
+            get {
+                return ResourceManager.GetString("Error_LocationsTerritoryFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Node &apos;{0}&apos; is not found..
         /// </summary>
         internal static string Error_NodeIsNotFound {
             get {
                 return ResourceManager.GetString("Error_NodeIsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip page - &apos;{0}&apos;..
+        /// </summary>
+        internal static string Error_SkipPage {
+            get {
+                return ResourceManager.GetString("Error_SkipPage", resourceCulture);
             }
         }
         
