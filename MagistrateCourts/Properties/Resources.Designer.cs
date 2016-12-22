@@ -95,5 +95,77 @@ namespace NoCompany.Data.Properties {
                 return ResourceManager.GetString("Error_NodeIsNotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load all curt regions..
+        /// </summary>
+        internal static string Trace_AllCurtRegionsLoad {
+            get {
+                return ResourceManager.GetString("Trace_AllCurtRegionsLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading HTML document ({0})..
+        /// </summary>
+        internal static string Trace_HtmlLoad {
+            get {
+                return ResourceManager.GetString("Trace_HtmlLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load districts for region &apos;{0}&apos;..
+        /// </summary>
+        internal static string Trace_LoadDistrictsForRegion {
+            get {
+                return ResourceManager.GetString("Trace_LoadDistrictsForRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load locations ({0})..
+        /// </summary>
+        internal static string Trace_LoadLocations {
+            get {
+                return ResourceManager.GetString("Trace_LoadLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Districts saving..
+        /// </summary>
+        internal static string Trace_SaveDistricts {
+            get {
+                return ResourceManager.GetString("Trace_SaveDistricts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locations saving..
+        /// </summary>
+        internal static string Trace_SaveLocations {
+            get {
+                return ResourceManager.GetString("Trace_SaveLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regions saving..
+        /// </summary>
+        internal static string Trace_SaveRegions {
+            get {
+                return ResourceManager.GetString("Trace_SaveRegions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage cleaning..
+        /// </summary>
+        internal static string Trace_StorageCleaning {
+            get {
+                return ResourceManager.GetString("Trace_StorageCleaning", resourceCulture);
+            }
+        }
     }
 }

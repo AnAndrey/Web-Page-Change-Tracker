@@ -8,12 +8,17 @@ using System.Net;
 using System.IO;
 using System.Threading.Tasks;
 using NoCompany.Data.Properties;
+using System.Threading;
+
 namespace NoCompany.Data
 {
     public class HtmlCourtsInfoFetcher : IDataProvider
     {
         private readonly int c_retryCount = 5;
         private readonly int c_maxDegreeOfParallelism = 20;
+
+        public event EventHandler<string> ImStillAlive;
+
         public HtmlCourtsInfoFetcher() { }
         
         public HtmlCourtsInfoFetcher(int retryCount, int maxDegreeOfParallelism)
@@ -23,6 +28,7 @@ namespace NoCompany.Data
         }
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {
+            KeepTracking(Resources.Trace_HtmlLoad, url);
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
                 Console.WriteLine("Invalid URL '{0}'.", url);
@@ -61,6 +67,9 @@ namespace NoCompany.Data
             const string href = "href";
             const string option = "option";
 
+            KeepTracking(Resources.Trace_AllCurtRegionsLoad);
+
+
             var list = new List<string>();
             HtmlDocument doc = LoadHtmlDocument(sudrf, Encoding.UTF8);
             if (doc == null)
@@ -95,10 +104,18 @@ namespace NoCompany.Data
                     .Cast<IChangeableData>().ToList();
         }
 
-        public IEnumerable<IChangeableData> GetData()
+        private void KeepTracking(string format, params object[] arg )
         {
+            ImStillAlive(this, String.Format(format, arg));
+        }
+
+        public IEnumerable<IChangeableData> GetData(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var regions = GetAllCurtRegions();
 
+            cancellationToken.ThrowIfCancellationRequested();
             Parallel.ForEach(regions, new ParallelOptions() { MaxDegreeOfParallelism = c_maxDegreeOfParallelism }, region =>
 
                     {
@@ -106,11 +123,13 @@ namespace NoCompany.Data
                         {
                             Console.WriteLine(region.Value);
                             region.Childs = GetAllCurtDistricts(region.Value);
+                            cancellationToken.ThrowIfCancellationRequested();
                             if (region.Childs != null)
                             {
                                 foreach (var district in region.Childs)
                                 {
                                     district.Childs = GetAllLocations(district.Value);
+                                    cancellationToken.ThrowIfCancellationRequested();
                                 }
                             }
                         }
@@ -121,6 +140,8 @@ namespace NoCompany.Data
 
         private IEnumerable<IChangeableData> GetAllLocations(string site)
         {
+            KeepTracking(Resources.Trace_LoadLocations, site);
+
             string str = site + "/modules.php?name=terr";
             HtmlDocument allCourtDistrcits = LoadHtmlDocument(str, Encoding.UTF8);
             if (allCourtDistrcits == null)
@@ -148,6 +169,7 @@ namespace NoCompany.Data
 
         private IEnumerable<IChangeableData> GetAllCurtDistricts(string regionNumber)
         {
+            KeepTracking(Resources.Trace_LoadDistrictsForRegion, regionNumber);
             const string getDistrictFormatString = "https://sudrf.ru/index.php?id=300&act=go_ms_search&searchtype=ms&var=true&ms_type=ms&court_subj={0}&ms_city=&ms_street=";
             HtmlDocument allCourtDistrcits = LoadHtmlDocument(String.Format(getDistrictFormatString, regionNumber), Encoding.UTF8);
             if (allCourtDistrcits == null)

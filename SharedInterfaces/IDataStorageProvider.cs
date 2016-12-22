@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 
 namespace NoCompany.Interfaces
 {
@@ -11,7 +12,7 @@ namespace NoCompany.Interfaces
         /// <summary>
         /// Saves data in storage.
         /// </summary>
-        void SaveData(IEnumerable<IChangeableData> data);
+        void SaveData(IEnumerable<IChangeableData> data, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Clean data storage.

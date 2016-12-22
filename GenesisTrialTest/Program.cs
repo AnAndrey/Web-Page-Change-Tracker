@@ -3,17 +3,19 @@ using NoCompany.Interfaces;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System.Configuration;
+using System.Threading;
 
 namespace GenesisTrialTest
 {
     class Program
     {
-            // 1. Init storage connection (IStorageConnector)
-            // 2. Init Reader, set parser (IDataFetcher)
-            // 3. Init changes detector   (IChangeDetector)
-            // 4. Init notifyer           (INotifyer)  
-            // 5. Read ChangeableData
-            // 6. Compare -> Store:Notify and Store
+        // 1. Init storage connection 
+        // 2. Init Reader, set parser 
+        // 3. Init changes detector   
+        // 4. Init notifyer            
+        // 5. Read ChangeableData
+        // 6. Compare -> Store:Notify and Store
+
         static void Main(string[] args)
         {
             try
@@ -23,7 +25,7 @@ namespace GenesisTrialTest
                 ChangesNotifierFacade noty = container.Resolve<ChangesNotifierFacade>();
                 noty.FindAndNotify();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Something goes wrong: \r\n {0}", ex);
             }
@@ -33,6 +35,6 @@ namespace GenesisTrialTest
             Console.ReadKey();
             return;
         }
-        
+
     }
 }

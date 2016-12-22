@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NoCompany.Interfaces;
 using CodeContracts;
-using GenesisTrialTest.Runner.Properties;
+using GenesisTrialTest.Properties;
+
 namespace GenesisTrialTest
 {
 
@@ -18,7 +19,7 @@ namespace GenesisTrialTest
     {
         private List<string> listOfChanges = new List<string>();
         private List<string> listOfErrors = new List<string>();
-
+        private const int s_defaultTimeOut = 30 * 1000;
         public IDataAnalyzer Analyzer { get; private set; }
         public IDataProvider ExternalSource { get; private set; }
         public IDataStorageProvider DataStorage { get; private set; }
@@ -41,6 +42,8 @@ namespace GenesisTrialTest
             ExternalSource = externalSource;
             DataStorage = dataStorage;
             Notificator = notificator;
+
+            OperationHangTimeOut = s_defaultTimeOut;
         }
 
         protected virtual void Notify()
@@ -55,14 +58,37 @@ namespace GenesisTrialTest
                 listOfChanges.Add(e);
         }
 
+        protected virtual IEnumerable<IChangeableData> GetExternalData()
+        {
+            using (HangWatcher watcher = new HangWatcher(OperationHangTimeOut))
+            {
+                ExternalSource.ImStillAlive += (o, e) =>
+                {
+                    watcher.PostPone(OperationHangTimeOut);
+                    Console.WriteLine("NEw event - '{0}'.", e);
+                };
+
+                //Get Fresh data
+
+                return ExternalSource.GetData(watcher.Token);
+            }
+        }
+
+        /// <summary>
+        /// Limits a time consumable operation in Milliseconds. 
+        /// If time is out the OperationCanceledException will be raised.
+        /// </summary>
+        public int OperationHangTimeOut { get; set; }
         public void FindAndNotify()
         {
-            //Get Freash data
-            var receivedData = ExternalSource.GetData();
+           
+            var receivedData = GetExternalData();
+
+            var presavedData = DataStorage.GetData();
+
             Assumes.True(receivedData != null && receivedData.Any(), Resources.Error_LoadExternalData) ;
 
             //Get old data
-            var presavedData = DataStorage.GetData();
 
             if (presavedData != null)
             {
@@ -76,5 +102,9 @@ namespace GenesisTrialTest
             DataStorage.SaveData(receivedData);
         }
 
+        private void ExternalSource_ImStillAlive(object sender, string e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

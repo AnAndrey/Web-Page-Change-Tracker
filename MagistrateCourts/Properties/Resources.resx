@@ -129,4 +129,28 @@
   <data name="Error_NodeIsNotFound" xml:space="preserve">
     <value>Node '{0}' is not found.</value>
   </data>
+  <data name="Trace_AllCurtRegionsLoad" xml:space="preserve">
+    <value>Load all curt regions.</value>
+  </data>
+  <data name="Trace_HtmlLoad" xml:space="preserve">
+    <value>Loading HTML document ({0}).</value>
+  </data>
+  <data name="Trace_LoadDistrictsForRegion" xml:space="preserve">
+    <value>Load districts for region '{0}'.</value>
+  </data>
+  <data name="Trace_LoadLocations" xml:space="preserve">
+    <value>Load locations ({0}).</value>
+  </data>
+  <data name="Trace_SaveDistricts" xml:space="preserve">
+    <value>Districts saving.</value>
+  </data>
+  <data name="Trace_SaveLocations" xml:space="preserve">
+    <value>Locations saving.</value>
+  </data>
+  <data name="Trace_SaveRegions" xml:space="preserve">
+    <value>Regions saving.</value>
+  </data>
+  <data name="Trace_StorageCleaning" xml:space="preserve">
+    <value>Storage cleaning.</value>
+  </data>
 </root>

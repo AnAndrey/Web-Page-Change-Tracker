@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+using System.Threading;
+
 namespace NoCompany.Interfaces
 {
     /// <summary>
@@ -13,7 +13,7 @@ namespace NoCompany.Interfaces
         /// <summary>
         /// Retrieve set of data from provider.
         /// </summary>
-        IEnumerable<IChangeableData> GetData();
+        IEnumerable<IChangeableData> GetData(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Event to distinguish time consumable operations and hangs.

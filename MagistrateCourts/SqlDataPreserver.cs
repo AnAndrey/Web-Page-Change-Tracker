@@ -3,14 +3,23 @@ using System.Linq;
 using NoCompany.Interfaces;
 using System.Data;
 using CodeContracts;
+using System;
+using System.Threading;
+using NoCompany.Data.Properties;
 
 namespace NoCompany.Data
 {
     public class SqlDataStorageProvider : IDataStorageProvider
     {
-        public IEnumerable<IChangeableData> GetData()
+        public event EventHandler<string> ImStillAlive;
+
+        public IEnumerable<IChangeableData> GetData(CancellationToken cancellationToken)
         {
-            IEnumerable<IChangeableData> data = null;
+            cancellationToken.ThrowIfCancellationRequested();
+
+            KeepTracking(Resources.Trace_AllCurtRegionsLoad);
+
+                        IEnumerable<IChangeableData> data = null;
             using (CourtDBContext dbContext = new CourtDBContext())
             {
                 data = dbContext.CourtRegions.Include("CourtDistricts")
@@ -22,13 +31,15 @@ namespace NoCompany.Data
         }
         public void CleanStorage()
         {
+            KeepTracking(Resources.Trace_StorageCleaning);
+
             using (CourtDBContext dbContext = new CourtDBContext())
             {
                 dbContext.BulkDelete(dbContext.CourtRegions);
             }
         }
 
-        public void SaveData(IEnumerable<IChangeableData> data)
+        public void SaveData(IEnumerable<IChangeableData> data, CancellationToken cancellationToken)
         {
             Requires.NotNullOrEmpty(data, "data");
             InsertAllRegions(data);
@@ -36,6 +47,8 @@ namespace NoCompany.Data
 
         private void InsertAllRegions(IEnumerable<IChangeableData> regionsRaw)
         {
+            KeepTracking(Resources.Trace_SaveRegions);
+
             Dictionary<string, CourtRegion> regionDictionary = null;
             CourtDBContext dbContext = new CourtDBContext();
             using (dbContext)
@@ -49,6 +62,8 @@ namespace NoCompany.Data
 
         private void InsertAllDistricts(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
         {
+            KeepTracking(Resources.Trace_SaveDistricts);
+
             List<CourtDistrict> districtsWithParentId = SetParentIdToDistricts(regionsSaved, regionsRaw);
 
             Dictionary<string, CourtDistrict> savedDistricts = null;
@@ -84,6 +99,8 @@ namespace NoCompany.Data
 
         private void InsertAllLocations(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
         {
+            KeepTracking(Resources.Trace_SaveLocations);
+
             List<CourtLocation> locationsToSave = SetParentIdToLocations(districtsSaved, districtsRaw);
 
             using (CourtDBContext dbContext = new CourtDBContext())
@@ -110,6 +127,12 @@ namespace NoCompany.Data
             }
 
             return locationsToSave;
+        }
+
+        private void KeepTracking(string format, params object[] arg)
+        {
+
+            //throw new NotImplementedException();
         }
 
     }
