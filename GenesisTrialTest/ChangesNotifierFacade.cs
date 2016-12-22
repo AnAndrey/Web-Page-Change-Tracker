@@ -7,14 +7,6 @@ using GenesisTrialTest.Properties;
 
 namespace GenesisTrialTest
 {
-
-    internal class MyException : Exception
-    {
-        internal MyException(string message) : base(message)
-        {
-
-        }
-    }
     public class ChangesNotifierFacade
     {
         private List<string> listOfChanges = new List<string>();
@@ -100,11 +92,6 @@ namespace GenesisTrialTest
             DataStorage.CleanStorage();
             // Save new data
             DataStorage.SaveData(receivedData);
-        }
-
-        private void ExternalSource_ImStillAlive(object sender, string e)
-        {
-            throw new NotImplementedException();
         }
     }
 }
