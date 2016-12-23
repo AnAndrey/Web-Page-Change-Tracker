@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenesisTrialTest.Runner", "GenesisTrialTest\GenesisTrialTest.Runner.csproj", "{701FA741-CD70-4B01-9A1C-56A07E8C07F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D305428-8FBC-46D0-A286-3B802AF483D6} = {9D305428-8FBC-46D0-A286-3B802AF483D6}
+		{34684EBF-8339-4720-830C-D6778EC6D439} = {34684EBF-8339-4720-830C-D6778EC6D439}
+		{981A45EA-8A4B-46ED-A0B3-3FD706EE4EB3} = {981A45EA-8A4B-46ED-A0B3-3FD706EE4EB3}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.EmailNotifier", "EmailNotifyer\NoCompany.EmailNotifier.csproj", "{34684EBF-8339-4720-830C-D6778EC6D439}"
 EndProject

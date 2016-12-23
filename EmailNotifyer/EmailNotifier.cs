@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CodeContracts;
 using System.Net.Mail;
 using System.Configuration;
 using NoCompany.Interfaces;
+using Newtonsoft.Json;
+using log4net;
+using NoCompany.EmailNotifier.Properties;
 
 namespace NoCompany.EmailNotifier
 {
     public class EmailNotifier : INotificationManager
     {
+        public static ILog logger = LogManager.GetLogger(typeof(EmailNotifier));
+
         private readonly string _sectionName = "EmailNotifierGroup/MessageFields";
         public EmailNotifier() { }
         public EmailNotifier(string sectionName)
@@ -22,15 +25,26 @@ namespace NoCompany.EmailNotifier
         {
             Requires.NotNullOrEmpty(info, "info");
 
-            using (MailMessage mm = CreateMessage(info))
+            using (MailMessage message = CreateMessage(info))
             {
                 using (SmtpClient sc = new SmtpClient())
                 {
-                    sc.Send(mm);
+                    Log(message, sc);
+
+                    sc.Send(message);
                 }
             }
         }
-
+        private void Log(MailMessage message, SmtpClient sc)
+        {
+            var specificTypesConverter = new SpecificTypesConverter(new Type[] { typeof(string), typeof(int), typeof(MailAddress) });
+            var jsonMessage = JsonConvert.SerializeObject(message,
+                                        Formatting.Indented,
+                                        specificTypesConverter);
+            logger.InfoFormat(Resources.Info_NotificationMessage, jsonMessage);
+            var jsonSmtpClient = JsonConvert.SerializeObject(sc, Formatting.Indented, specificTypesConverter);
+            logger.InfoFormat(Resources.Info_SmtpSettings, jsonSmtpClient);
+        }
         protected virtual MailMessage CreateMessage<T>(IEnumerable<T> info)
         {
             var messageFields = (MessageFields)ConfigurationManager.GetSection(_sectionName);
@@ -44,4 +58,5 @@ namespace NoCompany.EmailNotifier
         }
 
     }
+
 }

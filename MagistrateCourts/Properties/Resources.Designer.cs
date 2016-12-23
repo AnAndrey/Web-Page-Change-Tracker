@@ -79,7 +79,8 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to load web page - {0}. \r\n Url - &apos;{1}&apos;, attempt - &apos;{2}&apos; from &apos;{3}&apos;..
+        ///   Looks up a localized string similar to Failed to load web page - {0}.
+        ///Url - &apos;{1}&apos;, attempt - &apos;{2}&apos; from &apos;{3}&apos;..
         /// </summary>
         internal static string Error_FailedLoadPageRetry {
             get {
