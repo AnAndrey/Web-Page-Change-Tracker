@@ -11,6 +11,7 @@ using NoCompany.Data.Properties;
 using System.Threading;
 using log4net;
 using System.Reflection;
+using NoCompany.Data.Parsers;
 
 namespace NoCompany.Data
 {
@@ -127,84 +128,42 @@ namespace NoCompany.Data
         {
             logger.Debug(MethodBase.GetCurrentMethod().Name);
 
-            cancellationToken.ThrowIfCancellationRequested();
+            const string sudRF = "https://sudrf.ru";
 
-            var regions = GetAllCurtRegions();
+            IDataParserHandler dapataParser = new RegionsParser();
+            return dapataParser.Parce(sudRF);
 
-            cancellationToken.ThrowIfCancellationRequested();
-            Parallel.ForEach(regions, new ParallelOptions() { MaxDegreeOfParallelism = c_maxDegreeOfParallelism }, region =>
-                    {
-                        if (region.Value == "30")
-                        {
-                            Console.WriteLine(region.Value);
-                            region.Childs = GetAllCurtDistricts(region.Value);
-                            cancellationToken.ThrowIfCancellationRequested();
-                            if (region.Childs != null)
-                            {
-                                foreach (var district in region.Childs)
-                                {
-                                    district.Childs = GetAllLocations(district.Value);
-                                    cancellationToken.ThrowIfCancellationRequested();
-                                }
-                            }
-                        }
-                    });
+            //logger.Debug(MethodBase.GetCurrentMethod().Name);
 
-            return regions;
+            //cancellationToken.ThrowIfCancellationRequested();
+
+            //var regions = GetAllCurtRegions();
+
+            //cancellationToken.ThrowIfCancellationRequested();
+            //Parallel.ForEach(regions, new ParallelOptions() { MaxDegreeOfParallelism = c_maxDegreeOfParallelism }, region =>
+            //        {
+            //            if (region.Value == "30")
+            //            {
+            //                Console.WriteLine(region.Value);
+            //               // region.Childs = GetAllCurtDistricts(region.Value);
+            //                cancellationToken.ThrowIfCancellationRequested();
+            //                if (region.Childs != null)
+            //                {
+            //                    foreach (var district in region.Childs)
+            //                    {
+            //                  //      district.Childs = GetAllLocations(district.Value);
+            //                        cancellationToken.ThrowIfCancellationRequested();
+            //                    }
+            //                }
+            //            }
+            //        });
+
+            //return regions;
         }
 
-        private IEnumerable<IChangeableData> GetAllLocations(string site)
-        {
-            KeepTracking(Resources.Trace_LoadLocations, site);
+        
 
-            string locationsUrl = site + "/modules.php?name=terr";
-            HtmlDocument allLocations = LoadHtmlDocument(locationsUrl, Encoding.UTF8);
-            if (allLocations == null)
-            {
-                logger.ErrorFormat(Resources.Error_FailedToLocationsPage, site);
-                return null;
-            }
 
-            HtmlNode contentTable = allLocations.DocumentNode.SelectSingleNode("//div[@class='content']");
-            if (contentTable == null)
-            {
-                logger.ErrorFormat(Resources.Error_LocationsTableFail, locationsUrl);
-                return null;                    
-            }
-            var territoryItems = contentTable.SelectNodes("div[@class='terr-item']");
-            if (territoryItems == null)
-            {
-                logger.ErrorFormat(Resources.Error_LocationsTerritoryFail, locationsUrl);
-                return null;
-            }
-            return from n in territoryItems
-                   select (IChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }),
-                                                            n.SelectSingleNode("div[@class='left']").InnerText);
-        }
-
-        private IEnumerable<IChangeableData> GetAllCurtDistricts(string regionNumber)
-        {
-            KeepTracking(Resources.Trace_LoadDistrictsForRegion, regionNumber);
-            const string getDistrictFormatString = "https://sudrf.ru/index.php?id=300&act=go_ms_search&searchtype=ms&var=true&ms_type=ms&court_subj={0}&ms_city=&ms_street=";
-            string districtUrl = String.Format(getDistrictFormatString, regionNumber);
-            HtmlDocument allCourtDistrcits = LoadHtmlDocument(districtUrl, Encoding.UTF8);
-            if (allCourtDistrcits == null)
-            {
-                logger.ErrorFormat(Resources.Error_FailedToLoadDistricts, regionNumber, districtUrl);
-                return null;
-            }
-            var searchResultTbl = allCourtDistrcits.DocumentNode.SelectNodes("//table[@class='msSearchResultTbl']//tr//td");
-            if (searchResultTbl == null)
-            {
-                logger.ErrorFormat(Resources.Error_DistrictsTableFail, districtUrl);
-                return null;
-            }
-
-            return searchResultTbl.Select(n => new CourtDistrict(n.Element("a").InnerText,
-                                                                 n.SelectSingleNode(".//div[@class='courtInfoCont']//a").InnerText))
-                                                                  .Cast<IChangeableData>()
-                                                                  .ToList();
-        }
 
     }
 }

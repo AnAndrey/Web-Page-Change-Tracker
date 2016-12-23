@@ -120,6 +120,11 @@
     <Compile Include="Adapters\CourtLocation.Partial.cs" />
     <Compile Include="Adapters\CourtRegion.Partial.cs" />
     <Compile Include="HtmlRoutineException.cs" />
+    <Compile Include="Parsers\FailureHandler.cs" />
+    <Compile Include="Parsers\DataParserHandlerBase.cs" />
+    <Compile Include="Parsers\DistrictsParser.cs" />
+    <Compile Include="Parsers\LocationsParser.cs" />
+    <Compile Include="Parsers\RegionsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
