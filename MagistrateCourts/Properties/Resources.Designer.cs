@@ -169,7 +169,7 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load all curt regions..
+        ///   Looks up a localized string similar to Loading all curt regions..
         /// </summary>
         internal static string Trace_AllCurtRegionsLoad {
             get {
@@ -187,7 +187,7 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load districts for region &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Loading districts for region &apos;{0}&apos;..
         /// </summary>
         internal static string Trace_LoadDistrictsForRegion {
             get {
@@ -196,7 +196,7 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load locations ({0})..
+        ///   Looks up a localized string similar to Loading locations ({0})..
         /// </summary>
         internal static string Trace_LoadLocations {
             get {

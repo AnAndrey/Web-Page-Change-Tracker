@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using log4net;
 
 namespace GenesisTrialTest
 {
@@ -17,14 +18,14 @@ namespace GenesisTrialTest
         {
             try
             {
-                var container = new UnityContainer();
-                container.LoadConfiguration();
+                var container = new UnityContainer().LoadConfiguration();
+
                 ChangesNotifierFacade noty = container.Resolve<ChangesNotifierFacade>();
                 noty.FindAndNotify();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something goes wrong: \r\n {0}", ex);
+                LogManager.GetLogger("Main").ErrorFormat("Something goes wrong: \r\n {0}", ex);
             }
 
             Console.WriteLine();

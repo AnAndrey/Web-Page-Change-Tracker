@@ -154,16 +154,16 @@
     <value>Skip page - '{0}'.</value>
   </data>
   <data name="Trace_AllCurtRegionsLoad" xml:space="preserve">
-    <value>Load all curt regions.</value>
+    <value>Loading all curt regions.</value>
   </data>
   <data name="Trace_HtmlLoad" xml:space="preserve">
     <value>Loading HTML document ({0}).</value>
   </data>
   <data name="Trace_LoadDistrictsForRegion" xml:space="preserve">
-    <value>Load districts for region '{0}'.</value>
+    <value>Loading districts for region '{0}'.</value>
   </data>
   <data name="Trace_LoadLocations" xml:space="preserve">
-    <value>Load locations ({0}).</value>
+    <value>Loading locations ({0}).</value>
   </data>
   <data name="Trace_SaveDistricts" xml:space="preserve">
     <value>Districts saving.</value>

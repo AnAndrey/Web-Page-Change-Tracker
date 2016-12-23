@@ -33,8 +33,6 @@ namespace NoCompany.Data
         }
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {
-            logger.Debug(MethodBase.GetCurrentMethod().Name);
-
             KeepTracking(Resources.Trace_HtmlLoad, url);
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
