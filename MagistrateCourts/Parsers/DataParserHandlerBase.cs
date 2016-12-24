@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoCompany.Interfaces;
+using log4net;
+using HtmlAgilityPack;
+using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NoCompany.Data.Parsers
 {
     public abstract class DataParserHandlerBase : IDataParserHandler
     {
+        private static ILog logger = LogManager.GetLogger(typeof(DataParserHandlerBase));
 
-        public DataParserHandlerBase(IDataParserHandler locationsParser, IDataParserHandler failureHandler)
+        public int MaxDegreeOfParallelism { get; set; } = 1;
+        public HtmlDocumentLoader HtmlDocumentLoader { get; set; } = new HtmlDocumentLoader();
+        public DataParserHandlerBase(IDataParserHandler successHandler, IDataParserHandler failureHandler)
         {
-            Successor = locationsParser;
+            Successor = successHandler;
             Failer = failureHandler;
         }
 
-        DataParserHandlerBase()
+        public DataParserHandlerBase()
         {
-
         }
         public IDataParserHandler Failer{get;set;}
 
@@ -26,21 +30,35 @@ namespace NoCompany.Data.Parsers
 
         public virtual IEnumerable<IChangeableData> Parce(string entryPoint)
         {
-            var data = TryParce(entryPoint);
+            List<IChangeableData> data = TryParce(entryPoint);
             if (data == null)
             {
-                Failer.Parce(entryPoint);
+                data = Failer.Parce(entryPoint).ToList();
             }
-            else
+            if (data != null)
             {
-                foreach (var item in data)
+                Parallel.ForEach(data, new ParallelOptions() { MaxDegreeOfParallelism = MaxDegreeOfParallelism }, item =>
                 {
                     item.Childs = Successor.Parce(item.Value);
-                }
-            };
+                });
+            }
             return data;
+        }
+        private void KeepTracking(string trace_HtmlLoad, string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
+        {
+            return HtmlDocumentLoader.LoadHtmlDocument(url, encoding);
+        }
+        protected virtual void KeepTracking(string format, params object[] args)
+        {
+            //throw new NotImplementedException();
         }
 
         protected abstract List<IChangeableData> TryParce(string entryPoint);
     }
+
 }

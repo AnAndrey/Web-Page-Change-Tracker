@@ -13,9 +13,14 @@ namespace NoCompany.Data.Parsers
 {
     public class RegionsParser : DataParserHandlerBase
     {
-        public static ILog logger = LogManager.GetLogger(typeof(RegionsParser));
+        private static ILog logger = LogManager.GetLogger(typeof(RegionsParser));
 
         public RegionsParser() : base(new DistrictsParser(), new FailureHandler())
+        {
+        }
+
+        public RegionsParser(IDataParserHandler successHandler, IDataParserHandler failureHandler)
+            : base(successHandler, failureHandler)
         {
         }
 
@@ -27,7 +32,7 @@ namespace NoCompany.Data.Parsers
             const string href = "href";
             const string option = "option";
 
-            KeepTracking(Resources.Trace_AllCurtRegionsLoad);
+            KeepTracking( Resources.Trace_AllCurtRegionsLoad);
 
 
             var list = new List<string>();
@@ -60,18 +65,10 @@ namespace NoCompany.Data.Parsers
             var allCourtRegionsNode = allCourtRegionsDoc.DocumentNode.SelectSingleNode("//select[@id='ms_subj']");
 
             return allCourtRegionsNode.Descendants(option).Skip(1)
-                    .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value))
+                    .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value)).Where(x => x.Value == "30")
                     .Cast<IChangeableData>().ToList();
         }
 
-        private HtmlDocument LoadHtmlDocument(string v, Encoding uTF8)
-        {
-            throw new NotImplementedException();
-        }
 
-        private void KeepTracking(object trace_AllCurtRegionsLoad)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

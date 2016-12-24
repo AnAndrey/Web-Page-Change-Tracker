@@ -64,7 +64,7 @@ namespace GenesisTrialTest
             using (HangWatcher watcher = new HangWatcher(OperationHangTimeOut))
             {
                 ExternalSource.ImStillAlive += (o, e) => watcher.PostPone(OperationHangTimeOut);
-                return ExternalSource.GetData(watcher.Token);
+                return ExternalSource.GetData();
             }
         }
 

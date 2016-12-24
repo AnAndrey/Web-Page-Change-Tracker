@@ -12,7 +12,7 @@ namespace NoCompany.Interfaces
         /// <summary>
         /// Saves data in storage.
         /// </summary>
-        void SaveData(IEnumerable<IChangeableData> data, CancellationToken cancellationToken = default(CancellationToken));
+        void SaveData(IEnumerable<IChangeableData> data);
 
         /// <summary>
         /// Clean data storage.

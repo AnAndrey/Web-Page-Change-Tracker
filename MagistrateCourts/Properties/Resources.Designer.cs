@@ -240,5 +240,14 @@ namespace NoCompany.Data.Properties {
                 return ResourceManager.GetString("Trace_StorageCleaning", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trying to use next ensuing parser - &apos;{0}&apos;..
+        /// </summary>
+        internal static string Warn_NextParser {
+            get {
+                return ResourceManager.GetString("Warn_NextParser", resourceCulture);
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Data;
 using CodeContracts;
 using System;
 using System.Threading;
-using NoCompany.Data.Properties;
+using static NoCompany.Data.Properties.Resources;
 using log4net;
 
 namespace NoCompany.Data
@@ -16,11 +16,9 @@ namespace NoCompany.Data
 
         public event EventHandler ImStillAlive;
 
-        public IEnumerable<IChangeableData> GetData(CancellationToken cancellationToken)
+        public IEnumerable<IChangeableData> GetData()
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            KeepTracking(Resources.Trace_AllCurtRegionsLoad);
+            KeepTracking(Trace_AllCurtRegionsLoad);
 
                         IEnumerable<IChangeableData> data = null;
             using (CourtDBContext dbContext = new CourtDBContext())
@@ -34,7 +32,7 @@ namespace NoCompany.Data
         }
         public void CleanStorage()
         {
-            KeepTracking(Resources.Trace_StorageCleaning);
+            KeepTracking(Trace_StorageCleaning);
 
             using (CourtDBContext dbContext = new CourtDBContext())
             {
@@ -42,7 +40,7 @@ namespace NoCompany.Data
             }
         }
 
-        public void SaveData(IEnumerable<IChangeableData> data, CancellationToken cancellationToken)
+        public void SaveData(IEnumerable<IChangeableData> data)
         {
             Requires.NotNullOrEmpty(data, "data");
             InsertAllRegions(data);
@@ -50,7 +48,7 @@ namespace NoCompany.Data
 
         private void InsertAllRegions(IEnumerable<IChangeableData> regionsRaw)
         {
-            KeepTracking(Resources.Trace_SaveRegions);
+            KeepTracking(Trace_SaveRegions);
 
             Dictionary<string, CourtRegion> regionDictionary = null;
             CourtDBContext dbContext = new CourtDBContext();
@@ -65,7 +63,7 @@ namespace NoCompany.Data
 
         private void InsertAllDistricts(Dictionary<string, CourtRegion> regionsSaved, IEnumerable<IChangeableData> regionsRaw)
         {
-            KeepTracking(Resources.Trace_SaveDistricts);
+            KeepTracking(Trace_SaveDistricts);
 
             List<CourtDistrict> districtsWithParentId = SetParentIdToDistricts(regionsSaved, regionsRaw);
 
@@ -102,7 +100,7 @@ namespace NoCompany.Data
 
         private void InsertAllLocations(Dictionary<string, CourtDistrict> districtsSaved, IEnumerable<IChangeableData> districtsRaw)
         {
-            KeepTracking(Resources.Trace_SaveLocations);
+            KeepTracking(Trace_SaveLocations);
 
             List<CourtLocation> locationsToSave = SetParentIdToLocations(districtsSaved, districtsRaw);
 
