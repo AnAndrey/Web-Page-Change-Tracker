@@ -47,7 +47,8 @@ namespace NoCompany.Data.Parsers
 
         protected override List<IChangeableData> TryParce(string pageUrl)
         {
-            KeepTracking(Trace_LoadLocations, pageUrl);
+            logger.DebugFormat(Trace_LoadLocations, pageUrl);
+            KeepTracking();
 
             string locationsUrl = pageUrl + "/modules.php?name=terr";
             HtmlDocument allLocations = LoadHtmlDocument(locationsUrl, Encoding.UTF8);

@@ -8,16 +8,11 @@ namespace NoCompany.Interfaces
     ///     Allows an object to implement a DataProvider, and represents a method
     ///     that are used to retrieve requirable information
     /// </summary>
-    public interface IDataProvider
+    public interface IDataProvider: IViable
     {
         /// <summary>
         /// Retrieve set of data from provider.
         /// </summary>
         IEnumerable<IChangeableData> GetData();
-
-        /// <summary>
-        /// Event to distinguish time consumable operations and hangs.
-        /// </summary>
-        event EventHandler ImStillAlive;
     }
 }

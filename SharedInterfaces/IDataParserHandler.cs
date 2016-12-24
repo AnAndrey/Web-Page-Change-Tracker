@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NoCompany.Interfaces
 {
-    public interface IDataParserHandler
+    public interface IDataParserHandler: ICancelable, IViable
     {
         IDataParserHandler Successor { get; set; }
         IDataParserHandler Failer { get; set; }

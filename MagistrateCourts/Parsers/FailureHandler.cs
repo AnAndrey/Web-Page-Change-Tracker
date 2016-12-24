@@ -11,29 +11,24 @@ namespace NoCompany.Data.Parsers
     {
         public IDataParserHandler Failer
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get{throw new NotImplementedException();}
+            set{throw new NotImplementedException();}
+        }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
+        public bool IsCancellationRequested
+        {
+            get{throw new NotImplementedException();}
         }
 
         public IDataParserHandler Successor
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get{throw new NotImplementedException();}
+            set{throw new NotImplementedException();}
         }
+
+        public event EventHandler ImStillAlive;
+
+        public void Cancel() { throw new NotImplementedException(); }
 
         public IEnumerable<IChangeableData> Parce(string entryPoint)
         {

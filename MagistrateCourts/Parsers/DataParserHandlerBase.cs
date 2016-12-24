@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.String;
 using System.Collections.Generic;
 using NoCompany.Interfaces;
 using log4net;
@@ -12,6 +13,8 @@ namespace NoCompany.Data.Parsers
     public abstract class DataParserHandlerBase : IDataParserHandler
     {
         private static ILog logger = LogManager.GetLogger(typeof(DataParserHandlerBase));
+
+        public event EventHandler ImStillAlive;
 
         public int MaxDegreeOfParallelism { get; set; } = 1;
         public HtmlDocumentLoader HtmlDocumentLoader { get; set; } = new HtmlDocumentLoader();
@@ -27,6 +30,8 @@ namespace NoCompany.Data.Parsers
         public IDataParserHandler Failer{get;set;}
 
         public IDataParserHandler Successor { get; set; }
+
+        public bool IsCancellationRequested { get; private set; }
 
         public virtual IEnumerable<IChangeableData> Parce(string entryPoint)
         {
@@ -44,21 +49,22 @@ namespace NoCompany.Data.Parsers
             }
             return data;
         }
-        private void KeepTracking(string trace_HtmlLoad, string url)
-        {
-            throw new NotImplementedException();
-        }
 
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {
             return HtmlDocumentLoader.LoadHtmlDocument(url, encoding);
         }
-        protected virtual void KeepTracking(string format, params object[] args)
+        protected virtual void KeepTracking()
         {
-            //throw new NotImplementedException();
+            ImStillAlive(this, EventArgs.Empty);
         }
 
         protected abstract List<IChangeableData> TryParce(string entryPoint);
+
+        public void Cancel()
+        {
+            IsCancellationRequested = true;
+        }
     }
 
 }

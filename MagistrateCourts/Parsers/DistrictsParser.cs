@@ -26,7 +26,8 @@ namespace NoCompany.Data.Parsers
 
         protected override List<IChangeableData> TryParce(string regionNumber)
         {
-            KeepTracking(Trace_LoadDistrictsForRegion, regionNumber);
+            logger.DebugFormat(Trace_LoadDistrictsForRegion, regionNumber);
+            KeepTracking();
             string districtUrl = String.Format(c_districtFormatString, regionNumber);
             HtmlDocument allCourtDistrcits = LoadHtmlDocument(districtUrl, Encoding.UTF8);
             if (allCourtDistrcits == null)

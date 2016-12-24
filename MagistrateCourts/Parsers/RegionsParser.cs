@@ -32,7 +32,8 @@ namespace NoCompany.Data.Parsers
             const string href = "href";
             const string option = "option";
 
-            KeepTracking( Resources.Trace_AllCurtRegionsLoad);
+            logger.Debug(Resources.Trace_AllCurtRegionsLoad);
+            KeepTracking();
 
 
             var list = new List<string>();

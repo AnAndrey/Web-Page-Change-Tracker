@@ -27,8 +27,14 @@ namespace NoCompany.Data
         public HtmlCourtsInfoFetcher(IDataParserHandler parser)
         {
             Parser = parser;
+            Parser.ImStillAlive += Parser_ImStillAlive;     
         }
-        
+
+        private void Parser_ImStillAlive(object sender, EventArgs e)
+        {
+            ImStillAlive(sender, e);
+        }
+
         private void KeepTracking(string format, params object[] arg )
         {
             logger.DebugFormat(format, arg);

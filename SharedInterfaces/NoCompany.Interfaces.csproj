@@ -40,12 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICancelable.cs" />
     <Compile Include="IChangeableData.cs" />
     <Compile Include="IDataAnalyzer.cs" />
     <Compile Include="IDataParserHandler.cs" />
     <Compile Include="IDataProvider.cs" />
     <Compile Include="IDataStorageProvider.cs" />
     <Compile Include="INotificationManager.cs" />
+    <Compile Include="IViable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
