@@ -1,50 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NoCompany.Interfaces;
-using HtmlAgilityPack;
-using System.Net;
-using System.IO;
-using System.Threading.Tasks;
-using NoCompany.Data.Properties;
-using System.Threading;
 using log4net;
 using System.Reflection;
-using NoCompany.Data.Parsers;
 using CodeContracts;
 
 namespace NoCompany.Data
 {
-    public class HtmlCourtsInfoFetcher : CancelableBase, IDataProvider
+    public class HtmlCourtsInfoFetcher : ControlableExecutionBase, IDataProvider
     {
         public static ILog logger = LogManager.GetLogger(typeof(HtmlCourtsInfoFetcher));
+        private const string _sudRF = "https://sudrf.ru";
 
         public IDataParserHandler Parser { get; private set; }
         private Action CacelOperation { get; set; }
 
-        public event EventHandler ImStillAlive;
-       
+        public override IViabilityObserver ViabilityObserver
+        {
+            get
+            {
+                if (_viabilityObserver == null)
+                    _viabilityObserver = new ViabilityObserver();
+                return _viabilityObserver;
+            }
+
+            set
+            {
+                _viabilityObserver = value;
+            }
+        }
+
         public HtmlCourtsInfoFetcher(IDataParserHandler parser)
         {
             Requires.NotNull(parser, "parser");
             Parser = parser;
-            Parser.ImStillAlive += Parser_ImStillAlive;
-            CacelOperation = () => Parser.Cancel();
-        }
 
-        private void Parser_ImStillAlive(object sender, EventArgs e) 
-        {
-            ImStillAlive(sender, e);
+            Parser.ViabilityObserver = ViabilityObserver;
+            
+            CacelOperation = () => Parser.Cancel();
         }
 
         public IEnumerable<IChangeableData> GetData()
         {
             logger.Debug(MethodBase.GetCurrentMethod().Name);
 
-            const string sudRF = "https://sudrf.ru";
+            Parser.ViabilityObserver = ViabilityObserver;
 
-            return Parser.Parce(sudRF);
+            return Parser.Parce(_sudRF);
         }
 
         public override void Cancel()

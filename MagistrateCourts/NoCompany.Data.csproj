@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\CourtDBContext.Partial.cs" />
-    <Compile Include="CancelableBase.cs" />
+    <Compile Include="ControlableExecutionBase.cs" />
     <Compile Include="CourtDistrict.cs">
       <DependentUpon>DBCourtModel.tt</DependentUpon>
     </Compile>
@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="SqlDataPreserver.cs" />
     <Compile Include="Exceptions\StopOperatoinException.cs" />
+    <Compile Include="ViabilityObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DBCourtModel.Context.tt">

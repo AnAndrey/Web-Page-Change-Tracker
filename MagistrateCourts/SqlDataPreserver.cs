@@ -9,11 +9,9 @@ using log4net;
 
 namespace NoCompany.Data
 {
-    public class SqlDataStorageProvider : CancelableBase, IDataStorageProvider
+    public class SqlDataStorageProvider : ControlableExecutionBase, IDataStorageProvider
     {
         public static ILog logger = LogManager.GetLogger(typeof(SqlDataStorageProvider));
-
-        public event EventHandler ImStillAlive;
 
         public IEnumerable<IChangeableData> GetData()
         {
@@ -132,8 +130,8 @@ namespace NoCompany.Data
         private void KeepTracking(string format, params object[] arg)
         {
             logger.DebugFormat(format, arg);
-            if(ImStillAlive != null)
-                ImStillAlive(this, new EventArgs());
+            if(ViabilityObserver != null)
+                ViabilityObserver.Update(this);
         }
     }
 }

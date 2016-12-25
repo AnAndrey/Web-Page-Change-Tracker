@@ -18,12 +18,11 @@ namespace NoCompany.Data
         {
             get
             {
-                return this.CourtDistricts;
+                return CourtDistricts;
             }
 
             set
             {
-#warning DOUBLE casting!!!
                 CourtDistricts = value.Cast<CourtDistrict>().ToList() ;
             }
         }

@@ -7,15 +7,29 @@ using HtmlAgilityPack;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace NoCompany.Data.Parsers
 {
-    public abstract class DataParserHandlerBase : CancelableBase, IDataParserHandler
+    public abstract class DataParserHandlerBase : ControlableExecutionBase, IDataParserHandler
     {
-        private static ILog logger = LogManager.GetLogger(typeof(DataParserHandlerBase));
+        private static ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public event EventHandler ImStillAlive;
+        public override IViabilityObserver ViabilityObserver
+        {
+            get { return _viabilityObserver; }
+            set
+            {
+                _viabilityObserver = ViabilityObserver;
+                if (Successor != null)
+                    Successor.ViabilityObserver = _viabilityObserver;
 
+                if (Failer != null)
+                    Failer.ViabilityObserver =_viabilityObserver;
+            }
+        }
+        
+        private ParallelOptions _parallelOptions = null;
         public int MaxDegreeOfParallelism { get; set; } = 1;
         public HtmlDocumentLoader HtmlDocumentLoader { get; set; } = new HtmlDocumentLoader();
         public DataParserHandlerBase(IDataParserHandler successHandler, IDataParserHandler failureHandler)
@@ -33,30 +47,51 @@ namespace NoCompany.Data.Parsers
 
         public virtual IEnumerable<IChangeableData> Parce(string entryPoint)
         {
+            logger.Debug($"Successor type - '{Successor}', Failer type is '{Failer}'.");
             ShouldStopOperating();
-            List<IChangeableData> data = TryParce(entryPoint);
-            if (data == null)
+            IEnumerable<IChangeableData> data = TryParce(entryPoint);
+            if (data == null && Failer != null)
             {
-                data = Failer.Parce(entryPoint).ToList();
+                data = Failer.Parce(entryPoint);
             }
-            if (data != null)
-            {
-                Parallel.ForEach(data, new ParallelOptions() { MaxDegreeOfParallelism = MaxDegreeOfParallelism }, item =>
-                {
-                    item.Childs = Successor.Parce(item.Value);
-                });
-            }
+
+            FillChildsInParallel(data, Successor);
             return data;
+        }
+
+        private void FillChildsInParallel(IEnumerable<IChangeableData> data, IDataParserHandler parser)
+        {
+            if (data == null || parser == null)
+                return;
+
+            var exceptions = new ConcurrentQueue<Exception>();
+            Parallel.ForEach(data, ParallelOptions, item =>
+            {
+                try
+                {
+                    item.Childs = parser.Parce(item.Value);
+                }
+                catch (HtmlRoutineException ex)
+                {
+                    logger.Warn(ex.Message);
+                }
+                catch (StopOperatoinException stopEx)
+                {
+                    exceptions.Enqueue(stopEx);
+                    throw new AggregateException(exceptions);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Enqueue(ex);
+                }
+            });
+
+            if (exceptions.Any()) throw new AggregateException(exceptions);
         }
 
         protected virtual HtmlDocument LoadHtmlDocument(string url, Encoding encoding)
         {
             return HtmlDocumentLoader.LoadHtmlDocument(url, encoding);
-        }
-        protected virtual void KeepTracking()
-        {
-            if(ImStillAlive != null)
-                ImStillAlive(this, EventArgs.Empty);
         }
 
         public override void Cancel()
@@ -69,7 +104,17 @@ namespace NoCompany.Data.Parsers
                 Failer.Cancel();
         }
 
-        protected abstract List<IChangeableData> TryParce(string entryPoint);
+        protected virtual ParallelOptions ParallelOptions
+        {
+            get 
+            {
+                if(_parallelOptions == null)
+                    _parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = MaxDegreeOfParallelism };
+                return _parallelOptions;
+            }
+        }
+
+        protected abstract IEnumerable<IChangeableData> TryParce(string entryPoint);
     }
 
 }

@@ -53,7 +53,10 @@ namespace GenesisTrialTest
         protected virtual void Analyzer_DetectedDifferenceEvent(object sender, string e)
         {
             if (!String.IsNullOrEmpty(e))
+            {
+                logger.Debug(e);
                 listOfChanges.Add(e);
+            }
         }
 
         protected virtual IEnumerable<IChangeableData> GetExternalData()
@@ -64,7 +67,7 @@ namespace GenesisTrialTest
             using (HangWatcher watcher = new HangWatcher(OperationHangTimeOut))
             {
                 watcher.Token.Register(() => ExternalSource.Cancel());
-                ExternalSource.ImStillAlive += (o, e) => watcher.PostPone(OperationHangTimeOut);
+                ExternalSource.ViabilityObserver.SomeBodyStillAlive += (o, e) => watcher.PostPone(OperationHangTimeOut);
                 
                 return ExternalSource.GetData();
             }

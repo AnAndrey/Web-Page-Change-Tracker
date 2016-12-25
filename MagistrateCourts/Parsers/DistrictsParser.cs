@@ -24,7 +24,7 @@ namespace NoCompany.Data.Parsers
         {
         }
 
-        protected override List<IChangeableData> TryParce(string regionNumber)
+        protected override IEnumerable<IChangeableData> TryParce(string regionNumber)
         {
             logger.DebugFormat(Trace_LoadDistrictsForRegion, regionNumber);
             KeepTracking();
@@ -44,8 +44,8 @@ namespace NoCompany.Data.Parsers
 
             return searchResultTbl.Select(n => new CourtDistrict(n.Element("a").InnerText,
                                                                  n.SelectSingleNode(".//div[@class='courtInfoCont']//a").InnerText))
-                                                                  .Cast<IChangeableData>()
-                                                                  .ToList();
+                                                                    .Cast<IChangeableData>()
+                                                                    .ToList();
         }
 
 

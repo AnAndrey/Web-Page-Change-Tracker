@@ -26,6 +26,7 @@ namespace NoCompany.Data.Parsers
         }
         public override IEnumerable<IChangeableData> Parce(string entryPoint)
         {
+            logger.Debug($"Successor type - '{Successor}', Failer type is '{Failer}'.");
             ShouldStopOperating();
             IEnumerable<IChangeableData> data = null;
             try
@@ -46,7 +47,7 @@ namespace NoCompany.Data.Parsers
             return data;
         }
 
-        protected override List<IChangeableData> TryParce(string pageUrl)
+        protected override IEnumerable<IChangeableData> TryParce(string pageUrl)
         {
             ShouldStopOperating();
             logger.DebugFormat(Trace_LoadLocations, pageUrl);
@@ -72,8 +73,8 @@ namespace NoCompany.Data.Parsers
                 return null;
             }
             var data = from n in territoryItems
-                   select (IChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }),
-                                                            n.SelectSingleNode("div[@class='left']").InnerText);
+                       select (IChangeableData)new CourtLocation(n.SelectSingleNode("div[@class='right']").InnerText.Trim(new char[] { '\r', '\n', '\t' }),
+                                                                n.SelectSingleNode("div[@class='left']").InnerText);
             return data.ToList();
         }
     }

@@ -24,7 +24,7 @@ namespace NoCompany.Data.Parsers
         {
         }
 
-        protected override List<IChangeableData> TryParce(string pageUrl)
+        protected override IEnumerable<IChangeableData> TryParce(string pageUrl)
         {
             logger.Debug(MethodBase.GetCurrentMethod().Name);
 
@@ -66,8 +66,9 @@ namespace NoCompany.Data.Parsers
             var allCourtRegionsNode = allCourtRegionsDoc.DocumentNode.SelectSingleNode("//select[@id='ms_subj']");
 
             return allCourtRegionsNode.Descendants(option).Skip(1)
-                    .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value)).Where(x => x.Value == "30")
-                    .Cast<IChangeableData>().ToList();
+                    .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value))
+                    .Cast<IChangeableData>()
+                    .ToList();
         }
     }
 }

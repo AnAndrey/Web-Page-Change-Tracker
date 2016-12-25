@@ -14,7 +14,7 @@ namespace NoCompany.Data.Parsers
             return GiveUp(entryPoint);
         }
 
-        protected override List<IChangeableData> TryParce(string entryPoint)
+        protected override IEnumerable<IChangeableData> TryParce(string entryPoint)
         {
             return GiveUp(entryPoint);
         }

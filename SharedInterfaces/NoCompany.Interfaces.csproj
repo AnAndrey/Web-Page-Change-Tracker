@@ -47,6 +47,7 @@
     <Compile Include="IDataProvider.cs" />
     <Compile Include="IDataStorageProvider.cs" />
     <Compile Include="INotificationManager.cs" />
+    <Compile Include="IViabilityObserver.cs" />
     <Compile Include="IViable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
