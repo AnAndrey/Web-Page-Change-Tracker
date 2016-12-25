@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\CourtDBContext.Partial.cs" />
+    <Compile Include="CancelableBase.cs" />
     <Compile Include="CourtDistrict.cs">
       <DependentUpon>DBCourtModel.tt</DependentUpon>
     </Compile>
@@ -120,7 +121,7 @@
     <Compile Include="Adapters\CourtDistrict.Partial.cs" />
     <Compile Include="Adapters\CourtLocation.Partial.cs" />
     <Compile Include="Adapters\CourtRegion.Partial.cs" />
-    <Compile Include="HtmlRoutineException.cs" />
+    <Compile Include="Exceptions\HtmlRoutineException.cs" />
     <Compile Include="Parsers\FailureHandler.cs" />
     <Compile Include="Parsers\DataParserHandlerBase.cs" />
     <Compile Include="Parsers\DistrictsParser.cs" />
@@ -139,6 +140,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="SqlDataPreserver.cs" />
+    <Compile Include="Exceptions\StopOperatoinException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DBCourtModel.Context.tt">

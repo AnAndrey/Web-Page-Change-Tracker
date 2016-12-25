@@ -4,13 +4,12 @@ using NoCompany.Interfaces;
 using System.Data;
 using CodeContracts;
 using System;
-using System.Threading;
 using static NoCompany.Data.Properties.Resources;
 using log4net;
 
 namespace NoCompany.Data
 {
-    public class SqlDataStorageProvider : IDataStorageProvider
+    public class SqlDataStorageProvider : CancelableBase, IDataStorageProvider
     {
         public static ILog logger = LogManager.GetLogger(typeof(SqlDataStorageProvider));
 
@@ -136,6 +135,5 @@ namespace NoCompany.Data
             if(ImStillAlive != null)
                 ImStillAlive(this, new EventArgs());
         }
-
     }
 }

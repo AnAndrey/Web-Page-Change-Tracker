@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NoCompany.Data.Parsers
 {
-    public abstract class DataParserHandlerBase : IDataParserHandler
+    public abstract class DataParserHandlerBase : CancelableBase, IDataParserHandler
     {
         private static ILog logger = LogManager.GetLogger(typeof(DataParserHandlerBase));
 
@@ -31,10 +31,9 @@ namespace NoCompany.Data.Parsers
 
         public IDataParserHandler Successor { get; set; }
 
-        public bool IsCancellationRequested { get; private set; }
-
         public virtual IEnumerable<IChangeableData> Parce(string entryPoint)
         {
+            ShouldStopOperating();
             List<IChangeableData> data = TryParce(entryPoint);
             if (data == null)
             {
@@ -56,15 +55,21 @@ namespace NoCompany.Data.Parsers
         }
         protected virtual void KeepTracking()
         {
-            ImStillAlive(this, EventArgs.Empty);
+            if(ImStillAlive != null)
+                ImStillAlive(this, EventArgs.Empty);
+        }
+
+        public override void Cancel()
+        {
+            IsCancellationRequested = true;
+            if(Successor != null)
+                Successor.Cancel();
+
+            if(Failer != null)
+                Failer.Cancel();
         }
 
         protected abstract List<IChangeableData> TryParce(string entryPoint);
-
-        public void Cancel()
-        {
-            IsCancellationRequested = true;
-        }
     }
 
 }

@@ -8,7 +8,7 @@ namespace NoCompany.Interfaces
     ///     Allows an object to implement a DataProvider, and represents a method
     ///     that are used to retrieve requirable information
     /// </summary>
-    public interface IDataProvider: IViable
+    public interface IDataProvider: IViable, ICancelable
     {
         /// <summary>
         /// Retrieve set of data from provider.

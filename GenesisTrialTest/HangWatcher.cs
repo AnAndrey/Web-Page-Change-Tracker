@@ -8,7 +8,7 @@ namespace GenesisTrialTest
         private CancellationTokenSource _cts;
         public HangWatcher(int millisecondsTimeOut)
         {
-            _cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(millisecondsTimeOut));
+            _cts = new CancellationTokenSource(millisecondsTimeOut);
         }
 
         public void PostPone(int millisecondsDelay)

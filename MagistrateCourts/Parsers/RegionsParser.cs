@@ -69,7 +69,5 @@ namespace NoCompany.Data.Parsers
                     .Select(n => new CourtRegion(n.InnerText, n.Attributes["value"].Value)).Where(x => x.Value == "30")
                     .Cast<IChangeableData>().ToList();
         }
-
-
     }
 }

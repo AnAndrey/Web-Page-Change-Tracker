@@ -7,30 +7,19 @@ using NoCompany.Interfaces;
 
 namespace NoCompany.Data.Parsers
 {
-    public class FailureHandler : IDataParserHandler
+    public class FailureHandler : DataParserHandlerBase
     {
-        public IDataParserHandler Failer
+        public override IEnumerable<IChangeableData> Parce(string entryPoint)
         {
-            get{throw new NotImplementedException();}
-            set{throw new NotImplementedException();}
+            return GiveUp(entryPoint);
         }
 
-        public bool IsCancellationRequested
+        protected override List<IChangeableData> TryParce(string entryPoint)
         {
-            get{throw new NotImplementedException();}
+            return GiveUp(entryPoint);
         }
 
-        public IDataParserHandler Successor
-        {
-            get{throw new NotImplementedException();}
-            set{throw new NotImplementedException();}
-        }
-
-        public event EventHandler ImStillAlive;
-
-        public void Cancel() { throw new NotImplementedException(); }
-
-        public IEnumerable<IChangeableData> Parce(string entryPoint)
+        protected List<IChangeableData> GiveUp(string entryPoint)
         {
             throw new HtmlRoutineException("Have no idea how to parse an entry point - '{0}'. Try to add appropriate parser.", entryPoint);
         }

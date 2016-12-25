@@ -7,7 +7,7 @@ using NoCompany.Interfaces;
 using static NoCompany.Data.Properties.Resources;
 using HtmlAgilityPack;
 using log4net;
-
+using System.Threading;
 
 namespace NoCompany.Data.Parsers
 {
@@ -26,6 +26,7 @@ namespace NoCompany.Data.Parsers
         }
         public override IEnumerable<IChangeableData> Parce(string entryPoint)
         {
+            ShouldStopOperating();
             IEnumerable<IChangeableData> data = null;
             try
             {
@@ -47,9 +48,9 @@ namespace NoCompany.Data.Parsers
 
         protected override List<IChangeableData> TryParce(string pageUrl)
         {
+            ShouldStopOperating();
             logger.DebugFormat(Trace_LoadLocations, pageUrl);
             KeepTracking();
-
             string locationsUrl = pageUrl + "/modules.php?name=terr";
             HtmlDocument allLocations = LoadHtmlDocument(locationsUrl, Encoding.UTF8);
             if (allLocations == null)
