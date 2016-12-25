@@ -24,18 +24,24 @@ namespace NoCompany.EmailNotifier
         public void NotifyAbout<T>(IEnumerable<T> info)
         {
             Requires.NotNullOrEmpty(info, "info");
-
-            using (MailMessage message = CreateMessage(info))
+            try
             {
-                using (SmtpClient sc = new SmtpClient())
+                using (MailMessage message = CreateMessage(info))
                 {
-                    Log(message, sc);
+                    using (SmtpClient sc = new SmtpClient())
+                    {
+                        LogMailStuff(message, sc);
 
-                    sc.Send(message);
+                        sc.Send(message);
+                    }
                 }
             }
+            catch (SmtpException ex)
+            {
+                logger.ErrorFormat(Resources.Error_SendMailFail, ex.Message);
+            } 
         }
-        private void Log(MailMessage message, SmtpClient sc)
+        private void LogMailStuff(MailMessage message, SmtpClient sc)
         {
             var specificTypesConverter = new SpecificTypesConverter(new Type[] { typeof(string), typeof(int), typeof(MailAddress) });
             var jsonMessage = JsonConvert.SerializeObject(message,

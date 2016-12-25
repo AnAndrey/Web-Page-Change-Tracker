@@ -179,6 +179,15 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Getting data from database (DB name - &apos;{0}&apos;, DB source - &apos;{1}&apos;)..
+        /// </summary>
+        internal static string Trace_GetDbData {
+            get {
+                return ResourceManager.GetString("Trace_GetDbData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading HTML document ({0})..
         /// </summary>
         internal static string Trace_HtmlLoad {

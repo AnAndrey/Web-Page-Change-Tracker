@@ -40,6 +40,43 @@ namespace GenesisTrialTest
             Notificator = notificator;
         }
 
+        public void FindAndNotify()
+        {
+            logger.Debug(MethodBase.GetCurrentMethod().Name);
+
+            //Get Fresh data
+            var receivedData = GetExternalData();
+            //Get old data
+            var presavedData = DataStorage.GetData();
+
+            Assumes.True(receivedData != null && receivedData.Any(), Resources.Error_LoadExternalData);
+            try
+            {
+                if (presavedData != null)
+                {
+                    Analyzer.Analyze(receivedData, presavedData);
+                    Notify();
+                }
+                else
+                {
+                    logger.InfoFormat(Resources.Info_NoPreservedData);
+
+                }
+            }
+            catch (System.Net.Mail.SmtpException ex)
+            {
+                logger.Error(ex);
+            }
+            finally
+            {
+                // Clear All old data
+                DataStorage.CleanStorage();
+                // Save new data
+                DataStorage.SaveData(receivedData);
+            }
+
+        }
+
         protected virtual void Notify()
         {
 
@@ -86,42 +123,6 @@ namespace GenesisTrialTest
                 logger.InfoFormat(Resources.Info_TimeOutChange, value);
 
             }
-        }
-        public void FindAndNotify()
-        {
-            logger.Debug(MethodBase.GetCurrentMethod().Name);
-
-            //Get Fresh data
-            var receivedData = GetExternalData();
-            //Get old data
-            var presavedData = DataStorage.GetData();
-
-            Assumes.True(receivedData != null && receivedData.Any(), Resources.Error_LoadExternalData) ;
-            try
-            {
-                if (presavedData != null)
-                {
-                    Analyzer.Analyze(receivedData, presavedData);
-                    Notify();
-                }
-                else
-                {
-                    logger.InfoFormat(Resources.Info_NoPreservedData);
-
-                }
-            }
-            catch (System.Net.Mail.SmtpException ex)
-            {
-                logger.Error(ex);
-            }
-            finally
-            {
-                // Clear All old data
-                DataStorage.CleanStorage();
-                // Save new data
-                DataStorage.SaveData(receivedData);
-            }
-            
         }
     }
 }

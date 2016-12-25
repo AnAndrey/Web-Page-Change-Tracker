@@ -17,15 +17,16 @@ namespace NoCompany.Data
         {
             KeepTracking(Trace_AllCurtRegionsLoad);
 
-                        IEnumerable<IChangeableData> data = null;
             using (CourtDBContext dbContext = new CourtDBContext())
             {
-                data = dbContext.CourtRegions.Include("CourtDistricts")
+                logger.InfoFormat(Trace_GetDbData, 
+                    dbContext.Database.Connection.Database, 
+                    dbContext.Database.Connection.DataSource);
+
+                return dbContext.CourtRegions.Include("CourtDistricts")
                                              .Include("CourtDistricts.CourtLocations")
                                              .ToList();
             }
-
-            return data;
         }
         public void CleanStorage()
         {

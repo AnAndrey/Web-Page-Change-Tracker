@@ -61,6 +61,15 @@ namespace NoCompany.EmailNotifier.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to send notification message. Please, check SMTP settings in cofiguration file. {0}.
+        /// </summary>
+        internal static string Error_SendMailFail {
+            get {
+                return ResourceManager.GetString("Error_SendMailFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification message:
         ///{0}.
         /// </summary>

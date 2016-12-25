@@ -157,6 +157,9 @@ Url - '{1}', attempt - '{2}' from '{3}'.</value>
   <data name="Trace_AllCurtRegionsLoad" xml:space="preserve">
     <value>Loading all curt regions.</value>
   </data>
+  <data name="Trace_GetDbData" xml:space="preserve">
+    <value>Getting data from database (DB name - '{0}', DB source - '{1}').</value>
+  </data>
   <data name="Trace_HtmlLoad" xml:space="preserve">
     <value>Loading HTML document ({0}).</value>
   </data>
