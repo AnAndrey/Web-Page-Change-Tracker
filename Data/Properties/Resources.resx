@@ -181,6 +181,9 @@ Url - '{1}', attempt - '{2}' from '{3}'.</value>
   <data name="Trace_StorageCleaning" xml:space="preserve">
     <value>Storage cleaning.</value>
   </data>
+  <data name="Warn_DuplicatedDataFound" xml:space="preserve">
+    <value>Duplicated data: name - '{0}', value - '{1}'.</value>
+  </data>
   <data name="Warn_NextParser" xml:space="preserve">
     <value>Trying to use next ensuing parser - '{0}'.</value>
   </data>

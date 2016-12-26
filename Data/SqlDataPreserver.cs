@@ -3,7 +3,7 @@ using System.Linq;
 using NoCompany.Interfaces;
 using System.Data;
 using CodeContracts;
-using System;
+using NoCompany.CommonClasess;
 using static NoCompany.Data.Properties.Resources;
 using log4net;
 
@@ -69,7 +69,7 @@ namespace NoCompany.Data
             using (CourtDBContext dbContext = new CourtDBContext())
             {
                 dbContext.BulkInsert(districtsWithParentId);
-                savedDistricts = dbContext.CourtDistricts.ToDictionary(x => x.Name);
+                savedDistricts = dbContext.CourtDistricts.ToDictionary(x => logger.WarnFormat(Warn_DuplicatedDataFound,x.Name, x.Value));
             }
             InsertAllLocations(savedDistricts, districtsWithParentId);
         }
@@ -112,7 +112,7 @@ namespace NoCompany.Data
             foreach (var itemRaw in districtsRaw)
             {
                 CourtDistrict district = null;
-                if (itemRaw.Childs != null && districtsSaved.TryGetValue(itemRaw.Name, out district))
+                if (itemRaw.Childs != null && districtsSaved.TryGetValue(itemRaw.Value, out district))
                 {
                     var locations = itemRaw.Childs.Select(x =>
                     {

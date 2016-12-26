@@ -251,6 +251,15 @@ namespace NoCompany.Data.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicated data: name - &apos;{0}&apos;, value - &apos;{1}&apos;..
+        /// </summary>
+        internal static string Warn_DuplicatedDataFound {
+            get {
+                return ResourceManager.GetString("Warn_DuplicatedDataFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trying to use next ensuing parser - &apos;{0}&apos;..
         /// </summary>
         internal static string Warn_NextParser {

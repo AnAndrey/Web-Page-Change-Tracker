@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.DataAnalyzer", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.Interfaces", "Interfaces\NoCompany.Interfaces.csproj", "{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoCompany.CommonClasess", "NoCompany.CommonClasess\NoCompany.CommonClasess.csproj", "{65F25180-E964-49CC-AD8F-7B91A1EC2B47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EABC9645-D4BA-47EB-8BD8-2E72760D7CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F25180-E964-49CC-AD8F-7B91A1EC2B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F25180-E964-49CC-AD8F-7B91A1EC2B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F25180-E964-49CC-AD8F-7B91A1EC2B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F25180-E964-49CC-AD8F-7B91A1EC2B47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

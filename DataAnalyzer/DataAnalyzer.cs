@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoCompany.Interfaces;
-using CodeContracts;
+using NoCompany.CommonClasess;
 using NoCompany.DataAnalyzer.Properties;
 
 namespace NoCompany.DataAnalyzer
@@ -15,7 +15,7 @@ namespace NoCompany.DataAnalyzer
         {
             if (receivedDataSet == null || presavedDataSet == null)
                 return;
-            //To exclude shitty duplicates in receivedDataSet
+            //To exclude shitty duplicates in receivedDataSet           
             var receivedDataDictionary = receivedDataSet.ToDictionary();
             
             //To avoid double foreach
