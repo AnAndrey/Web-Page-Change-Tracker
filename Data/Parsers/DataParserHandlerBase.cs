@@ -20,7 +20,7 @@ namespace NoCompany.Data.Parsers
             get { return _viabilityObserver; }
             set
             {
-                _viabilityObserver = ViabilityObserver;
+                _viabilityObserver = value;
                 if (Successor != null)
                     Successor.ViabilityObserver = _viabilityObserver;
 
