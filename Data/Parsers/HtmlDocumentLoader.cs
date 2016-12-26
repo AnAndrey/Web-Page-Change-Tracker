@@ -13,7 +13,7 @@ namespace NoCompany.Data.Parsers
     public class HtmlDocumentLoader
     {
         private static ILog logger = LogManager.GetLogger(typeof(HtmlDocumentLoader));
-        private int _retryCount = 1;
+        private int _retryCount = 3;
         public int RetryCount
         {
             get{ return _retryCount; }

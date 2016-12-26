@@ -79,7 +79,7 @@ namespace GenesisTrialTest.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OperationHangTimeOut is &apos;{0}&apos;..
+        ///   Looks up a localized string similar to OperationHangTimeOut is &apos;{0}&apos; ms..
         /// </summary>
         internal static string Info_TimeOut {
             get {
@@ -88,7 +88,7 @@ namespace GenesisTrialTest.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OperationHangTimeOut changes on - &apos;{0}&apos;..
+        ///   Looks up a localized string similar to OperationHangTimeOut changes on - &apos;{0}&apos; ms..
         /// </summary>
         internal static string Info_TimeOutChange {
             get {

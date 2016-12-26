@@ -44,9 +44,8 @@ namespace GenesisTrialTest
         {
             logger.Debug(MethodBase.GetCurrentMethod().Name);
 
-            //Get Fresh data
             var receivedData = GetExternalData();
-            //Get old data
+
             var presavedData = DataStorage.GetData();
 
             Assumes.True(receivedData != null && receivedData.Any(), Resources.Error_LoadExternalData);
@@ -69,12 +68,9 @@ namespace GenesisTrialTest
             }
             finally
             {
-                // Clear All old data
                 DataStorage.CleanStorage();
-                // Save new data
                 DataStorage.SaveData(receivedData);
             }
-
         }
 
         protected virtual void Notify()

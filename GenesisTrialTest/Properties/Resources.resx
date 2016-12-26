@@ -124,9 +124,9 @@
     <value>There is no preserved data.</value>
   </data>
   <data name="Info_TimeOut" xml:space="preserve">
-    <value>OperationHangTimeOut is '{0}'.</value>
+    <value>OperationHangTimeOut is '{0}' ms.</value>
   </data>
   <data name="Info_TimeOutChange" xml:space="preserve">
-    <value>OperationHangTimeOut changes on - '{0}'.</value>
+    <value>OperationHangTimeOut changes on - '{0}' ms.</value>
   </data>
 </root>
