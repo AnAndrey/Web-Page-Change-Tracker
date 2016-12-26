@@ -130,16 +130,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedInterfaces\NoCompany.Interfaces.csproj">
-      <Project>{eabc9645-d4ba-47eb-8bd8-2e72760d7ce3}</Project>
-      <Name>NoCompany.Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\NoCompany.Interfaces.csproj">
+      <Project>{eabc9645-d4ba-47eb-8bd8-2e72760d7ce3}</Project>
+      <Name>NoCompany.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
