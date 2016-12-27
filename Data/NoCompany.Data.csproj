@@ -156,11 +156,11 @@
       <LastGenOutput>DBCourtModel.cs</LastGenOutput>
     </Content>
     <Content Include="DB\LocalDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DB\LocalDatabase_log.ldf">
       <DependentUpon>LocalDatabase.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
