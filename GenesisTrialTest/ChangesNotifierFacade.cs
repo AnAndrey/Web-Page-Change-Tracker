@@ -75,6 +75,7 @@ namespace GenesisTrialTest
 
         protected virtual void Notify()
         {
+            logger.InfoFormat(Resources.Info_CountOfChanges, listOfChanges.Count);
 
             if (listOfChanges.Any())
             {

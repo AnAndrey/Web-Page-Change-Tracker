@@ -120,6 +120,9 @@
   <data name="Error_LoadExternalData" xml:space="preserve">
     <value>Failed to load data from external source. Please, check the data provider.</value>
   </data>
+  <data name="Info_CountOfChanges" xml:space="preserve">
+    <value>'{0}' changes detected.</value>
+  </data>
   <data name="Info_NoPreservedData" xml:space="preserve">
     <value>There is no preserved data.</value>
   </data>

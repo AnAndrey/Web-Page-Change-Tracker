@@ -70,6 +70,15 @@ namespace GenesisTrialTest.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; changes detected..
+        /// </summary>
+        internal static string Info_CountOfChanges {
+            get {
+                return ResourceManager.GetString("Info_CountOfChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no preserved data..
         /// </summary>
         internal static string Info_NoPreservedData {
