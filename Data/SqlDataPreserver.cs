@@ -112,7 +112,7 @@ namespace NoCompany.Data
             foreach (var itemRaw in districtsRaw)
             {
                 CourtDistrict district = null;
-                if (itemRaw.Childs != null && districtsSaved.TryGetValue(itemRaw.Value, out district))
+                if (itemRaw.Childs != null && districtsSaved.TryGetValue(itemRaw.Name, out district))
                 {
                     var locations = itemRaw.Childs.Select(x =>
                     {
