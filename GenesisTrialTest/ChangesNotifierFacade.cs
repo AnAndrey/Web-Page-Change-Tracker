@@ -54,7 +54,6 @@ namespace GenesisTrialTest
                 if (presavedData != null)
                 {
                     Analyzer.Analyze(receivedData, presavedData);
-                    Notify();
                 }
                 else
                 {
@@ -68,6 +67,17 @@ namespace GenesisTrialTest
             }
             finally
             {
+                PostActions(receivedData);
+            }
+        }
+
+        protected void PostActions(IEnumerable<IChangeableData> receivedData)
+        {
+            logger.InfoFormat(Resources.Info_CountOfChanges, listOfChanges.Count);
+
+            if (listOfChanges.Any())
+            {
+                Notificator.NotifyAbout(listOfChanges);
                 DataStorage.CleanStorage();
                 DataStorage.SaveData(receivedData);
             }
