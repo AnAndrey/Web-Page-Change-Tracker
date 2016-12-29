@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoCompany.Interfaces;
+using System.Linq;
 
 namespace NoCompany.DataAnalyzer.Tests
 {
@@ -27,7 +28,7 @@ namespace NoCompany.DataAnalyzer.Tests
             }
         }
 
-        public bool HasChilds{get{return false;}}
+        public bool HasChilds{ get{ return _childs == null? false : _childs.Any(); }}
 
         public string Name { get; set; } = "fakename";
         public string Value { get; set; } = "fakevalue";
