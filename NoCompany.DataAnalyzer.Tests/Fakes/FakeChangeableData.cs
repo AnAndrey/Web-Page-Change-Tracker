@@ -28,7 +28,7 @@ namespace NoCompany.DataAnalyzer.Tests
             }
         }
 
-        public bool HasChilds{ get{ return _childs == null? false : _childs.Any(); }}
+        public bool HasChilds{ get{ throw new NotImplementedException(); }}
 
         public string Name { get; set; } = "fakename";
         public string Value { get; set; } = "fakevalue";
