@@ -1,5 +1,5 @@
 # Web-Page-Change-Tracker
-Util to to monitor particulcar changes on a web pages and notify about them. Pre-employment testing practice in Genes1s, Russian IT company. 
+Util to monitor particulcar changes on a web pages and notify about them. Pre-employment testing practice in Genes1s, Russian IT company. 
 
 ## How it works
 1. Get data1 from first source
